@@ -1,5 +1,5 @@
 # require a minimum version of cmake
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 
 # set(CMAKE_CXX_COMPILER "g++")
 project(murphi LANGUAGES CXX VERSION 1.0 DESCRIPTION "murphi generator c++ library" )

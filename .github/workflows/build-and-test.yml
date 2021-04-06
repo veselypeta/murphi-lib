@@ -1,0 +1,41 @@
+name: Build and test
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: clang-format
+        uses: DoozyX/clang-format-lint-action@v0.11
+        with:
+          source: '.'
+          extensions: 'h,cpp'
+          clangFormatVersion: 11
+          style: chromium
+          inplace: True
+      - uses: EndBug/add-and-commit@v4
+        with:
+          author_name: Clang robot
+          author_email: robot@example.com
+          message: 'Committing clang-format changes'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Build Project
+        uses: nicledomaS/cmake_build_action@v1.3
+        with:
+          submodule_update: ON 
+          run_tests: ON 
+          unit_test_build: -Dtest=ON
+
