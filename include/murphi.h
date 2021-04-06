@@ -1,12 +1,10 @@
 #pragma once
 
-namespace murphi
-{
-    class Module
-    {
-    public:
-        void dump();
+namespace murphi {
+class Module {
+ public:
+  void dump();
 
-    private:
-    };
-} // namespace murphi
+ private:
+};
+}  // namespace murphi
