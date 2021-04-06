@@ -21,4 +21,11 @@ This is a C++ Library to generate Murphi code from C++
 
 ## Test
 
-The Library uses `googletest` for the unit testing framework. To run the tests, simply run `ctest` from inside the build directory.
+The Library uses `googletest` for the unit testing framework. 
+
+To run the tests, simply run `ctest` from inside the build directory.
+
+## Murphi
+We are targeting CMurphi from the following repository: https://bitbucket.org/Nik-U/cmurphi/src/master/
+
+Full syntax of Murphi is outlined here: https://www.cs.ubc.ca/~ajh/courses/cpsc513/assign-token/User.Manual
