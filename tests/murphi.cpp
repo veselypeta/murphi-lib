@@ -2,6 +2,7 @@
 #include "murphi.h"
 
 // Test module is created without error
-TEST(MurphiSuite, CreateModuleObject) {
+TEST(MurphiSuite, CreateModuleObject)
+{
     murphi::Module mod;
 }

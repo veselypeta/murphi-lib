@@ -10,11 +10,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: clang-format
-        uses: DoozyX/clang-format-lint-action@v0.6
+        uses: DoozyX/clang-format-lint-action@v0.11
         with:
           source: '.'
           extensions: 'h,cpp'
-          clangFormatVersion: 9
+          clangFormatVersion: 11
   
   build:
     name: Build and test
