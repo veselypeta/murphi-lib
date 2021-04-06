@@ -1,13 +1,25 @@
 #pragma once
+#include "models/Expr.h"
+#include <string>
 
 namespace murphi {
 class Module {
- public:
+public:
   /**
-   Dump the module to stdout
- */
+  Add a constant declaration to the Murphi Module (integer only)
+*/
+  void addConstDecl(std::string id, Expr expr);
+
+  /**
+  Returns Murphi code as a formatted String
+*/
+  std::string getAsString();
+
+  /**
+ Dump the module to stdout
+*/
   void dump();
 
- private:
+private:
 };
-}  // namespace murphi
+} // namespace murphi

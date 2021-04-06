@@ -1,6 +1,12 @@
 #include "murphi.h"
 #include <iostream>
+#include <string>
 
-void murphi::Module::dump() {
-  std::cout << "TODO - dump the murphi module" << std::endl;
+// <constdecl> ::=	<ID> : <expr>
+void murphi::Module::addConstDecl(std::string id, murphi::Expr expr) {
+  // TODO -- add a constant to the module
 }
+
+std::string murphi::Module::getAsString() { return ""; }
+
+void murphi::Module::dump() { std::cout << getAsString() << std::endl; }
