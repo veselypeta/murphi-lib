@@ -66,9 +66,7 @@ class ParenthExpr : public Expr {
 public:
   ParenthExpr(Expr *ex) : ex(ex) {}
   virtual std::string getAsString();
-  ~ParenthExpr(){
-      delete ex;
-  }
+  ~ParenthExpr() { delete ex; }
 
 private:
   Expr *ex;

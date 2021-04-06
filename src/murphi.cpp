@@ -3,7 +3,7 @@
 #include <string>
 
 // <constdecl> ::=	<ID> : <expr>
-void murphi::Module::addConstDecl(std::string id, murphi::Expr expr) {
+void murphi::Module::addConstDecl(std::string id, murphi::Expr *expr) {
   // TODO -- add a constant to the module
 }
 

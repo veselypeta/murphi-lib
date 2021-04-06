@@ -3,10 +3,7 @@
 #include <gtest/gtest.h>
 
 // Test module is created without error
-TEST(MurphiSuite, CreateModuleObject) {
-  murphi::Module mod;
-}
-
+TEST(MurphiSuite, CreateModuleObject) { murphi::Module mod; }
 
 // Expressions Suite
 TEST(ExprSuite, IntExprPrinting) {
@@ -38,4 +35,3 @@ TEST(ExprSuite, ParenthExprPrinting) {
 
   delete p;
 }
-

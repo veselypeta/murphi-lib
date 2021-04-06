@@ -8,7 +8,7 @@ public:
   /**
   Add a constant declaration to the Murphi Module (integer only)
 */
-  void addConstDecl(std::string id, Expr expr);
+  void addConstDecl(std::string id, Expr *expr);
 
   /**
   Returns Murphi code as a formatted String
