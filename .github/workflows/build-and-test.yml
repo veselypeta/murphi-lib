@@ -16,12 +16,17 @@ jobs:
           extensions: 'h,cpp'
           clangFormatVersion: 9
   
-  # build:
-  #   name: Build and test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #       with:
-  #         path: 'mlir-standalone-template'
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Build Project
+        uses: nicledomaS/cmake_build_action@v1.3
+        with:
+          submodule_update: ON 
+          run_tests: ON 
+          unit_test_build: -Dtest=ON
 
