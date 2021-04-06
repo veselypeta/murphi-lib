@@ -7,7 +7,7 @@ This is a C++ Library to generate Murphi code from C++
 ## Prerequisites
 
 - C++ compiler, support for c++14 or higher
-- CMake version 3.10 or greater
+- CMake version 3.15 or greater
 
 ## Build and Run
 

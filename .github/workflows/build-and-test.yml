@@ -1,0 +1,27 @@
+name: Build and test
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: clang-format
+        uses: DoozyX/clang-format-lint-action@v0.6
+        with:
+          source: '.'
+          extensions: 'h,cpp'
+          clangFormatVersion: 9
+  
+  # build:
+  #   name: Build and test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #       with:
+  #         path: 'mlir-standalone-template'
+
