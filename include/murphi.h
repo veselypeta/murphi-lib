@@ -2,9 +2,12 @@
 
 namespace murphi {
 class Module {
- public:
+public:
+  /**
+   Dump the module to stdout
+ */
   void dump();
 
- private:
+private:
 };
-}  // namespace murphi
+} // namespace murphi
