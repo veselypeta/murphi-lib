@@ -2,5 +2,7 @@
 #include <string>
 
 namespace murphi {
-std::string IdTypeExpr::getAsString() { return typeId; }
-} // namespace murphi
+std::string IdTypeExpr::getAsString() {
+  return typeId;
+}
+}  // namespace murphi

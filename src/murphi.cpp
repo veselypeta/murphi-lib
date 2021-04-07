@@ -3,8 +3,8 @@
 #include <sstream>
 #include <string>
 #include "models/ConstDecl.h"
-#include "models/TypeExpr.h"
 #include "models/TypeDecl.h"
+#include "models/TypeExpr.h"
 
 namespace murphi {
 
@@ -13,12 +13,12 @@ void Module::addConstDecl(std::string id, murphi::Expr* expr) {
   decls.addConstDecl(constDecl);
 }
 
-void Module::addTypeDecl(std::string id, TypeExpr *expr){
-  murphi::TypeDecl *tDecl = new murphi::TypeDecl(id, expr);
+void Module::addTypeDecl(std::string id, TypeExpr* expr) {
+  murphi::TypeDecl* tDecl = new murphi::TypeDecl(id, expr);
   decls.addTypeDecl(tDecl);
 }
 
-bool Module::isVaidReference(std::string id){
+bool Module::isVaidReference(std::string id) {
   return decls.isValidReference(id) /* || otherObject() ....*/;
 }
 
