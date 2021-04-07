@@ -21,9 +21,9 @@ include(GNUInstallDirs)
 # add the library
 add_library(murphi SHARED 
   src/murphi.cpp 
-  src/models/Expr.cpp 
-  src/models/Decl.cpp 
   src/models/ConstDecl.cpp
+  src/models/Decl.cpp 
+  src/models/Expr.cpp 
   src/models/TypeDecl.cpp
   src/models/TypeExpr.cpp
   src/models/VarDecl.cpp

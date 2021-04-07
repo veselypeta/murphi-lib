@@ -4,6 +4,7 @@
 #include "models/Expr.h"
 #include "models/TypeDecl.h"
 #include "models/VarDecl.h"
+#include "models/TypeExpr.h"
 
 // Test Module is printed correctly
 TEST(ModuleSuite, CorrectlyPrinting) {
@@ -21,11 +22,11 @@ TEST(ModuleSuite, CorrectlyPrinting) {
   m.addConstDecl(id2, expr4);
 
   // add a basic type
-  murphi::TypeExpr* texpr = new murphi::IdTypeExpr("idType");
+  murphi::TypeExpr* texpr = new murphi::ID("idType");
   m.addTypeDecl("myType", texpr);
 
   // add a basic variable
-  murphi::TypeExpr* nTypeExpr = new murphi::IdTypeExpr("OBJSET_cache");
+  murphi::TypeExpr* nTypeExpr = new murphi::ID("OBJSET_cache");
   m.addVarDecl("myVar", nTypeExpr);
 
   std::string expectedString =
@@ -56,7 +57,7 @@ TEST(ModuleSuite, CorrectlyFindsCostDeclReferences) {
 TEST(ModuleSuite, CorrectlyFindsTypeDeclReference) {
   murphi::Module m;
   std::string id = "newType";
-  murphi::TypeExpr* typExpr = new murphi::IdTypeExpr(id);
+  murphi::TypeExpr* typExpr = new murphi::ID(id);
   m.addTypeDecl(id, typExpr);
 
   ASSERT_TRUE(m.isVaidReference(id));
@@ -267,7 +268,7 @@ TEST(ConstDeclSuite, PrintConstDecl) {
 TEST(TypeDeclSuite, PrintsIdTypeExpression) {
   // No verification on if 'NrCaches' acutally exists
   std::string tId = "myType";
-  murphi::TypeExpr* idTyExpr = new murphi::IdTypeExpr("NrCaches");
+  murphi::TypeExpr* idTyExpr = new murphi::ID("NrCaches");
   murphi::TypeDecl* tDecl = new murphi::TypeDecl(tId, idTyExpr);
 
   std::string expected = "myType : NrCaches;";
@@ -280,7 +281,7 @@ TEST(TypeDeclSuite, PrintsIdTypeExpression) {
 // Test Var Decls
 TEST(VarDeclSuite, PrintsVarDeclsCorrectly) {
   std::string vId = "cache";
-  murphi::TypeExpr* texpr = new murphi::IdTypeExpr("OBJSET_cache");
+  murphi::TypeExpr* texpr = new murphi::ID("OBJSET_cache");
   murphi::VarDecl* varDecl = new murphi::VarDecl(vId, texpr);
 
   EXPECT_STREQ(varDecl->getId().c_str(), "cache");
