@@ -1,6 +1,8 @@
 #pragma once
+#include "models/Decl.h"
 #include "models/Expr.h"
 #include <string>
+#include <vector>
 
 namespace murphi {
 class Module {
@@ -21,5 +23,6 @@ public:
   void dump();
 
 private:
+  Decl decls;
 };
 } // namespace murphi
