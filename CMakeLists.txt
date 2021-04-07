@@ -19,7 +19,12 @@ FetchContent_MakeAvailable(googletest)
 include(GNUInstallDirs)
 
 # add the library
-add_library(murphi SHARED src/murphi.cpp src/models/Expr.cpp src/models/Decl.cpp src/models/ConstDecl.cpp)
+add_library(murphi SHARED 
+  src/murphi.cpp 
+  src/models/Expr.cpp 
+  src/models/Decl.cpp 
+  src/models/ConstDecl.cpp
+)
 
 # set the properties to export version and pupblic header for api
 set_target_properties(murphi PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION 1 PUBLIC_HEADER include/murphi.h)
