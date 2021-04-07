@@ -1,14 +1,17 @@
 #include "models/Expr.h"
 #include <string>
 
-std::string murphi::IntExpr::getAsString() {
+namespace murphi {
+
+std::string IntExpr::getAsString() {
   return std::to_string(exprVal);
 }
 
-std::string murphi::AddExpr::getAsString() {
+std::string AddExpr::getAsString() {
   return lhs->getAsString() + " + " + rhs->getAsString();
 }
 
-std::string murphi::ParenthExpr::getAsString() {
+std::string ParenthExpr::getAsString() {
   return "(" + ex->getAsString() + ")";
 }
+}  // namespace murphi

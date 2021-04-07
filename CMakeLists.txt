@@ -24,6 +24,8 @@ add_library(murphi SHARED
   src/models/Expr.cpp 
   src/models/Decl.cpp 
   src/models/ConstDecl.cpp
+  src/models/TypeDecl.cpp
+  src/models/TypeExpr.cpp
 )
 
 # set the properties to export version and pupblic header for api

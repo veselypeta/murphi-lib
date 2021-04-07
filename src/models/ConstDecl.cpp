@@ -2,10 +2,13 @@
 #include <string>
 #include "models/Decl.h"
 
-std::string murphi::ConstDecl::getAsString() {
+namespace murphi {
+
+std::string ConstDecl::getAsString() {
   return id + " : " + expression->getAsString() + ";";
 }
 
-std::string murphi::ConstDecl::getId() {
+std::string ConstDecl::getId() {
   return id;
 }
+}  // namespace murphi
