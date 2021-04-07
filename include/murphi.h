@@ -1,16 +1,16 @@
 #pragma once
-#include "models/Decl.h"
-#include "models/Expr.h"
 #include <string>
 #include <vector>
+#include "models/Decl.h"
+#include "models/Expr.h"
 
 namespace murphi {
 class Module {
-public:
+ public:
   /**
   Add a constant declaration to the Murphi Module (integer only)
 */
-  void addConstDecl(std::string id, Expr *expr);
+  void addConstDecl(std::string id, Expr* expr);
 
   /**
   Returns Murphi code as a formatted String
@@ -22,7 +22,7 @@ public:
 */
   void dump();
 
-private:
+ private:
   Decl decls;
 };
-} // namespace murphi
+}  // namespace murphi

@@ -32,43 +32,43 @@
 namespace murphi {
 // Abstract Class Expression
 class Expr {
-public:
+ public:
   virtual std::string getAsString() = 0;
   virtual ~Expr(){};
 };
 
 class IntExpr : public Expr {
-public:
+ public:
   IntExpr(int value) : exprVal(value) {}
   virtual std::string getAsString();
   ~IntExpr() {}
 
-private:
+ private:
   int exprVal;
 };
 
 class AddExpr : public Expr {
-public:
-  AddExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+ public:
+  AddExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
   virtual std::string getAsString();
   ~AddExpr() {
     delete lhs;
     delete rhs;
   }
 
-private:
-  Expr *lhs;
-  Expr *rhs;
+ private:
+  Expr* lhs;
+  Expr* rhs;
 };
 
 class ParenthExpr : public Expr {
-public:
-  ParenthExpr(Expr *ex) : ex(ex) {}
+ public:
+  ParenthExpr(Expr* ex) : ex(ex) {}
   virtual std::string getAsString();
   ~ParenthExpr() { delete ex; }
 
-private:
-  Expr *ex;
+ private:
+  Expr* ex;
 };
 
-} // namespace murphi
+}  // namespace murphi
