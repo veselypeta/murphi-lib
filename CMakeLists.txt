@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.15)
 # set(CMAKE_CXX_COMPILER "g++")
 project(murphi LANGUAGES CXX VERSION 1.0 DESCRIPTION "murphi generator c++ library" )
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
@@ -19,7 +19,12 @@ FetchContent_MakeAvailable(googletest)
 include(GNUInstallDirs)
 
 # add the library
-add_library(murphi SHARED src/murphi.cpp)
+add_library(murphi SHARED 
+  src/murphi.cpp 
+  src/models/Expr.cpp 
+  src/models/Decl.cpp 
+  src/models/ConstDecl.cpp
+)
 
 # set the properties to export version and pupblic header for api
 set_target_properties(murphi PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION 1 PUBLIC_HEADER include/murphi.h)
@@ -46,7 +51,7 @@ enable_testing()
 
 add_executable(
   murphi-test
-  tests/murphi.cpp
+  tests/murphi-test.cpp
 )
 
 target_include_directories(murphi-test PRIVATE include)
