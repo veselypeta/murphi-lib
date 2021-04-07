@@ -3,6 +3,7 @@
 #include "models/ConstDecl.h"
 #include "models/Expr.h"
 #include "models/TypeDecl.h"
+#include "models/VarDecl.h"
 
 // Test Module is printed correctly
 TEST(ModuleSuite, CorrectlyPrinting) {
@@ -23,6 +24,11 @@ TEST(ModuleSuite, CorrectlyPrinting) {
   murphi::TypeExpr* texpr = new murphi::IdTypeExpr("idType");
   m.addTypeDecl("myType", texpr);
 
+  // add a basic variable
+  murphi::TypeExpr* nTypeExpr = new murphi::IdTypeExpr("OBJSET_cache");
+  m.addVarDecl("myVar", nTypeExpr);
+
+
   std::string expectedString =
       "\
 const \n\
@@ -30,6 +36,8 @@ const \n\
 \tcomplex : 6 + 5;\n\
 type \n\
 \tmyType : idType;\n\
+var \n\
+\tmyVar : OBJSET_cache;\n\
 ";
 
   ASSERT_STREQ(m.getAsString().c_str(), expectedString.c_str());
@@ -119,4 +127,17 @@ TEST(TypeDeclSuite, PrintsIdTypeExpression) {
   EXPECT_STREQ(tDecl->getAsString().c_str(), expected.c_str());
 
   delete tDecl;
+}
+
+
+// Test Var Decls
+TEST(VarDeclSuite, PrintsVarDeclsCorrectly){
+  std::string vId = "cache";
+  murphi::TypeExpr *texpr = new murphi::IdTypeExpr("OBJSET_cache");
+  murphi::VarDecl *varDecl = new murphi::VarDecl(vId, texpr);
+
+  EXPECT_STREQ(varDecl->getId().c_str(), "cache");
+  EXPECT_STREQ(varDecl->getAsString().c_str(), "cache : OBJSET_cache;");
+
+  delete varDecl;
 }
