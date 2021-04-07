@@ -3,7 +3,9 @@
 
 namespace murphi {
 
-std::string IntExpr::getAsString() { return std::to_string(exprVal); }
+std::string IntExpr::getAsString() {
+  return std::to_string(exprVal);
+}
 
 std::string AddExpr::getAsString() {
   return lhs->getAsString() + " + " + rhs->getAsString();
@@ -23,7 +25,9 @@ std::string RemExpr::getAsString() {
   return lhs->getAsString() + " % " + rhs->getAsString();
 }
 
-std::string LogNegExpr::getAsString() { return "!" + expr->getAsString(); }
+std::string LogNegExpr::getAsString() {
+  return "!" + expr->getAsString();
+}
 
 std::string LogDisjExpr::getAsString() {
   return lhs->getAsString() + " | " + rhs->getAsString();
@@ -66,5 +70,7 @@ std::string CondExpr::getAsString() {
          elseExpr->getAsString();
 }
 
-std::string ParenthExpr::getAsString() { return "(" + ex->getAsString() + ")"; }
-} // namespace murphi
+std::string ParenthExpr::getAsString() {
+  return "(" + ex->getAsString() + ")";
+}
+}  // namespace murphi
