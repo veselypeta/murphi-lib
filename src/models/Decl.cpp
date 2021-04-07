@@ -1,5 +1,6 @@
 #include "models/Decl.h"
 #include "models/ConstDecl.h"
+#include "models/TypeDecl.h"
 
 namespace murphi {
 std::string Decl::getAsString() {
@@ -8,6 +9,12 @@ std::string Decl::getAsString() {
   s += "const \n";
   for (ConstDecl *cd : constDecls) {
     s += "\t" + cd->getAsString() + "\n";
+  }
+
+  // print the type decls
+  s += "type \n";
+  for (TypeDecl *td : typeDecls) {
+    s += "\t" + td->getAsString() + "\n";
   }
 
   // TODO - print all other decls

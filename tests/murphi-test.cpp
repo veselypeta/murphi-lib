@@ -1,6 +1,6 @@
 #include "models/ConstDecl.h"
-#include "models/TypeDecl.h"
 #include "models/Expr.h"
+#include "models/TypeDecl.h"
 #include "murphi.h"
 #include <gtest/gtest.h>
 
@@ -19,10 +19,16 @@ TEST(ModuleSuite, CorrectlyPrinting) {
   murphi::Expr *expr4 = new murphi::AddExpr(expr2, expr3);
   m.addConstDecl(id2, expr4);
 
+  // add a basic type
+  murphi::TypeExpr *texpr = new murphi::IdTypeExpr("idType");
+  m.addTypeDecl("myType", texpr);
+
   std::string expectedString = "\
 const \n\
 \tNrCaches : 4;\n\
 \tcomplex : 6 + 5;\n\
+type \n\
+\tmyType : idType;\n\
 ";
 
   ASSERT_STREQ(m.getAsString().c_str(), expectedString.c_str());
@@ -39,15 +45,15 @@ TEST(ModuleSuite, CorrectlyFindsCostDeclReferences) {
   ASSERT_FALSE(m.isVaidReference("randomReference"));
 }
 
-TEST(ModuleSuite, CorrectlyFindsTypeDeclReference) { 
-  murphi::Module m; 
+TEST(ModuleSuite, CorrectlyFindsTypeDeclReference) {
+  murphi::Module m;
   std::string id = "newType";
   murphi::TypeExpr *typExpr = new murphi::IdTypeExpr(id);
   m.addTypeDecl(id, typExpr);
 
   ASSERT_TRUE(m.isVaidReference(id));
   ASSERT_FALSE(m.isVaidReference("NrCaches"));
-  }
+}
 
 // Expressions Suite
 TEST(ExprSuite, IntExprPrinting) {
@@ -108,7 +114,9 @@ TEST(TypeDeclSuite, PrintsIdTypeExpression) {
   murphi::TypeExpr *idTyExpr = new murphi::IdTypeExpr("NrCaches");
   murphi::TypeDecl *tDecl = new murphi::TypeDecl(tId, idTyExpr);
 
-  std::string expected = "myType : NrCaches";
+  std::string expected = "myType : NrCaches;";
+
+  EXPECT_STREQ(tDecl->getAsString().c_str(), expected.c_str());
 
   delete tDecl;
 }

@@ -4,6 +4,7 @@
 namespace murphi
 {
     std::string TypeDecl::getAsString(){
-        return id + " : " + expr->getAsString();
+        assert(expr->getAsString() != "" && "somehow got empty string!");
+        return id + " : " + expr->getAsString() + ";";
     }
 } // namespace murphi

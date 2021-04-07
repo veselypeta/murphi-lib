@@ -14,12 +14,12 @@ namespace murphi {
 class TypeExpr : Printable<TypeExpr> {
 public:
   virtual std::string getAsString() = 0;
-  virtual ~TypeExpr(){}
+  virtual ~TypeExpr() {}
 };
 
 class IdTypeExpr : public TypeExpr {
 public:
-  IdTypeExpr(std::string typeId) {}
+  IdTypeExpr(std::string typeId) : typeId(typeId) {}
   std::string getAsString();
 
 private:
