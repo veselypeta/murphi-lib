@@ -19,6 +19,11 @@ Add a Type declaration to the Murphi Module
   void addTypeDecl(std::string id, TypeExpr* expr);
 
   /**
+Add a Variable declaration to the Murphi Module
+*/
+  void addVarDecl(std::string id, TypeExpr* expr);
+
+  /**
 Returns true if a reference is valid (i.e. references a type/variable/function
 etc.)
 */

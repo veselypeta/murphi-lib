@@ -17,7 +17,10 @@ std::string Decl::getAsString() {
     s += "\t" + td->getAsString() + "\n";
   }
 
-  // TODO - print all other decls
+  s += "var \n";
+  for (VarDecl* vd : varDecls) {
+    s += "\t" + vd->getAsString() + "\n";
+  }
   return s;
 }
 

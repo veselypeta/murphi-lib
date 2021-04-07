@@ -5,6 +5,7 @@
 #include "models/ConstDecl.h"
 #include "models/TypeDecl.h"
 #include "models/TypeExpr.h"
+#include "models/VarDecl.h"
 
 namespace murphi {
 
@@ -16,6 +17,11 @@ void Module::addConstDecl(std::string id, murphi::Expr* expr) {
 void Module::addTypeDecl(std::string id, TypeExpr* expr) {
   murphi::TypeDecl* tDecl = new murphi::TypeDecl(id, expr);
   decls.addTypeDecl(tDecl);
+}
+
+void Module::addVarDecl(std::string id, TypeExpr* expr) {
+  murphi::VarDecl* vdecl = new murphi::VarDecl(id, expr);
+  decls.addVarDecl(vdecl);
 }
 
 bool Module::isVaidReference(std::string id) {
