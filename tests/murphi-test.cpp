@@ -99,6 +99,155 @@ TEST(ExprSuite, ParenthExprPrinting) {
   delete nextAdd;
 }
 
+TEST(ExprSuite, SubExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::SubExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 - 44");
+  delete k;
+}
+
+TEST(ExprSuite, MultExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::MultExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 * 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, DivExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::DivExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 / 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, RemExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::RemExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 % 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, LogNegExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+
+  murphi::Expr* k = new murphi::LogNegExpr(i);
+  EXPECT_STREQ(k->getAsString().c_str(), "!8");
+
+  delete k;
+}
+
+TEST(ExprSuite, LogDisjExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::LogDisjExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 | 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, LogConjExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::LogConjExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 & 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, LogImplExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::LogImplExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 -> 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, LTExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::LTExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 < 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, LTEQExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::LTEQExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 <= 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, GTExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::GTExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 < 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, EQExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::EQExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 = 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, NEQExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::NEQExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 != 44");
+
+  delete k;
+}
+
+TEST(ExprSuite, CondExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+  murphi::Expr* j2 = new murphi::IntExpr(48);
+
+  murphi::Expr* k = new murphi::CondExpr(i, j, j2);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 ? 44 : 48");
+
+  delete k;
+}
+
+TEST(ExprSuite, GTEQExprPrinting) {
+  murphi::Expr* i = new murphi::IntExpr(8);
+  murphi::Expr* j = new murphi::IntExpr(44);
+
+  murphi::Expr* k = new murphi::GTEQExpr(i, j);
+  EXPECT_STREQ(k->getAsString().c_str(), "8 <= 44");
+
+  delete k;
+}
+
 TEST(ConstDeclSuite, PrintConstDecl) {
   murphi::Expr* i = new murphi::IntExpr(8);
   murphi::Expr* j = new murphi::IntExpr(44);
