@@ -28,7 +28,6 @@ TEST(ModuleSuite, CorrectlyPrinting) {
   murphi::TypeExpr* nTypeExpr = new murphi::IdTypeExpr("OBJSET_cache");
   m.addVarDecl("myVar", nTypeExpr);
 
-
   std::string expectedString =
       "\
 const \n\
@@ -129,12 +128,11 @@ TEST(TypeDeclSuite, PrintsIdTypeExpression) {
   delete tDecl;
 }
 
-
 // Test Var Decls
-TEST(VarDeclSuite, PrintsVarDeclsCorrectly){
+TEST(VarDeclSuite, PrintsVarDeclsCorrectly) {
   std::string vId = "cache";
-  murphi::TypeExpr *texpr = new murphi::IdTypeExpr("OBJSET_cache");
-  murphi::VarDecl *varDecl = new murphi::VarDecl(vId, texpr);
+  murphi::TypeExpr* texpr = new murphi::IdTypeExpr("OBJSET_cache");
+  murphi::VarDecl* varDecl = new murphi::VarDecl(vId, texpr);
 
   EXPECT_STREQ(varDecl->getId().c_str(), "cache");
   EXPECT_STREQ(varDecl->getAsString().c_str(), "cache : OBJSET_cache;");

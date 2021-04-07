@@ -18,7 +18,7 @@ std::string Decl::getAsString() {
   }
 
   s += "var \n";
-  for (VarDecl *vd : varDecls){
+  for (VarDecl* vd : varDecls) {
     s += "\t" + vd->getAsString() + "\n";
   }
   return s;

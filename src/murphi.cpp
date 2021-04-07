@@ -19,8 +19,8 @@ void Module::addTypeDecl(std::string id, TypeExpr* expr) {
   decls.addTypeDecl(tDecl);
 }
 
-void Module::addVarDecl(std::string id, TypeExpr *expr){
-  murphi::VarDecl *vdecl = new murphi::VarDecl(id, expr);
+void Module::addVarDecl(std::string id, TypeExpr* expr) {
+  murphi::VarDecl* vdecl = new murphi::VarDecl(id, expr);
   decls.addVarDecl(vdecl);
 }
 

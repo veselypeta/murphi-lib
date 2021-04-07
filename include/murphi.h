@@ -1,27 +1,27 @@
 #pragma once
+#include <string>
+#include <vector>
 #include "models/Decl.h"
 #include "models/Expr.h"
 #include "models/TypeExpr.h"
-#include <string>
-#include <vector>
 
 namespace murphi {
 class Module {
-public:
+ public:
   /**
   Add a constant declaration to the Murphi Module
 */
-  void addConstDecl(std::string id, Expr *expr);
+  void addConstDecl(std::string id, Expr* expr);
 
   /**
 Add a Type declaration to the Murphi Module
 */
-  void addTypeDecl(std::string id, TypeExpr *expr);
+  void addTypeDecl(std::string id, TypeExpr* expr);
 
   /**
 Add a Variable declaration to the Murphi Module
 */
-  void addVarDecl(std::string id, TypeExpr *expr);
+  void addVarDecl(std::string id, TypeExpr* expr);
 
   /**
 Returns true if a reference is valid (i.e. references a type/variable/function
@@ -39,7 +39,7 @@ etc.)
 */
   void dump();
 
-private:
+ private:
   Decl decls;
 };
-} // namespace murphi
+}  // namespace murphi
