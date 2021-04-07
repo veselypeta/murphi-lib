@@ -1,5 +1,5 @@
 #include "models/Expr.h"
-#include <memory>
+#include <string>
 
 std::string murphi::IntExpr::getAsString() { return std::to_string(exprVal); }
 
