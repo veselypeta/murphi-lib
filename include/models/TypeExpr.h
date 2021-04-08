@@ -1,11 +1,11 @@
 #pragma once
 #include "interfaces/Printable.h"
 #include "models/Expr.h"
-#include "models/VarDecl.h"
 #include <string>
 #include <vector>
 
 namespace murphi {
+class VarDecl;
 /*
     <typeExpr> ::=	<ID>		-- a previously defined type.
     <typeExpr> ::=	<expr> .. <expr>	-- Integer subrange.
@@ -63,7 +63,9 @@ private:
 class Record : public TypeExpr {
 public:
   Record() {}
-  ~Record() { body.clear(); }
+  ~Record() {
+    body.clear();
+  }
 
   virtual std::string getAsString();
   void addVarDecl(VarDecl *vd);

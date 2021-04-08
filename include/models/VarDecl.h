@@ -7,7 +7,7 @@
 namespace murphi {
 class VarDecl : public Printable<VarDecl>, public Identifyable<VarDecl> {
 public:
-  VarDecl(std::string id, TypeExpr *expr) : id(id), expr{expr} {}
+  VarDecl(std::string id, TypeExpr *expr) : id(id), expr(expr) {}
   ~VarDecl() { delete expr; }
   std::string getAsString();
   std::string getId();

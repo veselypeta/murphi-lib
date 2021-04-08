@@ -1,10 +1,11 @@
 #include "murphi.h"
+#include "models/TypeExpr.h"
 #include <gtest/gtest.h>
 #include "models/ConstDecl.h"
 #include "models/Expr.h"
 #include "models/TypeDecl.h"
 #include "models/VarDecl.h"
-#include "models/TypeExpr.h"
+#include "utils/PrintUtils.h"
 
 // Test Module is printed correctly
 TEST(ModuleSuite, CorrectlyPrinting) {
@@ -264,6 +265,49 @@ TEST(ConstDeclSuite, PrintConstDecl) {
   delete constDecl;
 }
 
+// Type Expr Suite
+TEST(TypeExprSuite, PrintIDTypeExpr){
+  murphi::TypeExpr *a = new murphi::ID("test");
+  EXPECT_STREQ(a->getAsString().c_str(), "test");
+  delete a;
+}
+
+TEST(TypeExprSuite, IntegerSubrangePrint){
+  murphi::Expr *a = new murphi::IntExpr(0);
+  murphi::Expr *b = new murphi::IntExpr(5);
+
+  murphi::TypeExpr *c = new murphi::IntegerSubRange(a, b);
+
+  EXPECT_STREQ(c->getAsString().c_str(), "0 .. 5");
+
+  delete c;
+}
+
+TEST(TypeExprSuite, EnumPrint){
+  murphi::Enum *e = new murphi::Enum();
+  e->addEnum("val1");
+  e->addEnum("val2");
+  e->addEnum("random");
+
+  EXPECT_STREQ(e->getAsString().c_str(), "enum {val1,val2,random};");
+
+  delete e;
+}
+
+TEST(TypeExprSuite, RecordPrint){
+  murphi::Record *r = new murphi::Record();
+  murphi::TypeExpr *at = new murphi::ID("test");
+  murphi::VarDecl *a = new murphi::VarDecl("init", at);
+  r->addVarDecl(a);
+
+  EXPECT_STREQ(r->getAsString().c_str(), "record [init : test;];");
+
+  delete r;
+}
+
+
+
+
 // Type Decl tests
 TEST(TypeDeclSuite, PrintsIdTypeExpression) {
   // No verification on if 'NrCaches' acutally exists
@@ -288,4 +332,20 @@ TEST(VarDeclSuite, PrintsVarDeclsCorrectly) {
   EXPECT_STREQ(varDecl->getAsString().c_str(), "cache : OBJSET_cache;");
 
   delete varDecl;
+}
+
+
+
+// Utils
+
+TEST(UtilsSuite, Interleave){
+  std::vector<std::string> s = {"hi", "hello", "bob", "plant", "steve"};
+  std::string out = murphi::utils::interleave(s,"|");
+  EXPECT_STREQ(out.c_str(), "hi|hello|bob|plant|steve");
+}
+
+TEST(UtilsSuite, InterleaveComma){
+  std::vector<std::string> s = {"hi", "hello", "bob"};
+  std::string out = murphi::utils::interleaveComma(s);
+  EXPECT_STREQ(out.c_str(), "hi,hello,bob");
 }
