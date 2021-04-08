@@ -3,7 +3,9 @@
 #include "models/ConstDecl.h"
 #include "models/Expr.h"
 #include "models/TypeDecl.h"
+#include "models/TypeExpr.h"
 #include "models/VarDecl.h"
+#include "utils/PrintUtils.h"
 
 // Test Module is printed correctly
 TEST(ModuleSuite, CorrectlyPrinting) {
@@ -21,11 +23,11 @@ TEST(ModuleSuite, CorrectlyPrinting) {
   m.addConstDecl(id2, expr4);
 
   // add a basic type
-  murphi::TypeExpr* texpr = new murphi::IdTypeExpr("idType");
+  murphi::TypeExpr* texpr = new murphi::ID("idType");
   m.addTypeDecl("myType", texpr);
 
   // add a basic variable
-  murphi::TypeExpr* nTypeExpr = new murphi::IdTypeExpr("OBJSET_cache");
+  murphi::TypeExpr* nTypeExpr = new murphi::ID("OBJSET_cache");
   m.addVarDecl("myVar", nTypeExpr);
 
   std::string expectedString =
@@ -56,7 +58,7 @@ TEST(ModuleSuite, CorrectlyFindsCostDeclReferences) {
 TEST(ModuleSuite, CorrectlyFindsTypeDeclReference) {
   murphi::Module m;
   std::string id = "newType";
-  murphi::TypeExpr* typExpr = new murphi::IdTypeExpr(id);
+  murphi::TypeExpr* typExpr = new murphi::ID(id);
   m.addTypeDecl(id, typExpr);
 
   ASSERT_TRUE(m.isVaidReference(id));
@@ -263,11 +265,51 @@ TEST(ConstDeclSuite, PrintConstDecl) {
   delete constDecl;
 }
 
+// Type Expr Suite
+TEST(TypeExprSuite, PrintIDTypeExpr) {
+  murphi::TypeExpr* a = new murphi::ID("test");
+  EXPECT_STREQ(a->getAsString().c_str(), "test");
+  delete a;
+}
+
+TEST(TypeExprSuite, IntegerSubrangePrint) {
+  murphi::Expr* a = new murphi::IntExpr(0);
+  murphi::Expr* b = new murphi::IntExpr(5);
+
+  murphi::TypeExpr* c = new murphi::IntegerSubRange(a, b);
+
+  EXPECT_STREQ(c->getAsString().c_str(), "0 .. 5");
+
+  delete c;
+}
+
+TEST(TypeExprSuite, EnumPrint) {
+  murphi::Enum* e = new murphi::Enum();
+  e->addEnum("val1");
+  e->addEnum("val2");
+  e->addEnum("random");
+
+  EXPECT_STREQ(e->getAsString().c_str(), "enum {val1,val2,random};");
+
+  delete e;
+}
+
+TEST(TypeExprSuite, RecordPrint) {
+  murphi::Record* r = new murphi::Record();
+  murphi::TypeExpr* at = new murphi::ID("test");
+  murphi::VarDecl* a = new murphi::VarDecl("init", at);
+  r->addVarDecl(a);
+
+  EXPECT_STREQ(r->getAsString().c_str(), "record [init : test;];");
+
+  delete r;
+}
+
 // Type Decl tests
 TEST(TypeDeclSuite, PrintsIdTypeExpression) {
   // No verification on if 'NrCaches' acutally exists
   std::string tId = "myType";
-  murphi::TypeExpr* idTyExpr = new murphi::IdTypeExpr("NrCaches");
+  murphi::TypeExpr* idTyExpr = new murphi::ID("NrCaches");
   murphi::TypeDecl* tDecl = new murphi::TypeDecl(tId, idTyExpr);
 
   std::string expected = "myType : NrCaches;";
@@ -280,11 +322,25 @@ TEST(TypeDeclSuite, PrintsIdTypeExpression) {
 // Test Var Decls
 TEST(VarDeclSuite, PrintsVarDeclsCorrectly) {
   std::string vId = "cache";
-  murphi::TypeExpr* texpr = new murphi::IdTypeExpr("OBJSET_cache");
+  murphi::TypeExpr* texpr = new murphi::ID("OBJSET_cache");
   murphi::VarDecl* varDecl = new murphi::VarDecl(vId, texpr);
 
   EXPECT_STREQ(varDecl->getId().c_str(), "cache");
   EXPECT_STREQ(varDecl->getAsString().c_str(), "cache : OBJSET_cache;");
 
   delete varDecl;
+}
+
+// Utils
+
+TEST(UtilsSuite, Interleave) {
+  std::vector<std::string> s = {"hi", "hello", "bob", "plant", "steve"};
+  std::string out = murphi::utils::interleave(s, "|");
+  EXPECT_STREQ(out.c_str(), "hi|hello|bob|plant|steve");
+}
+
+TEST(UtilsSuite, InterleaveComma) {
+  std::vector<std::string> s = {"hi", "hello", "bob"};
+  std::string out = murphi::utils::interleaveComma(s);
+  EXPECT_STREQ(out.c_str(), "hi,hello,bob");
 }

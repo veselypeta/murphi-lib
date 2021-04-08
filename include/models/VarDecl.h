@@ -5,7 +5,7 @@
 #include "models/TypeExpr.h"
 
 namespace murphi {
-class VarDecl : Printable<VarDecl>, Identifyable<VarDecl> {
+class VarDecl : public Printable<VarDecl>, public Identifyable<VarDecl> {
  public:
   VarDecl(std::string id, TypeExpr* expr) : id(id), expr(expr) {}
   ~VarDecl() { delete expr; }
