@@ -1,9 +1,9 @@
 #include "murphi.h"
-#include "models/TypeExpr.h"
 #include <gtest/gtest.h>
 #include "models/ConstDecl.h"
 #include "models/Expr.h"
 #include "models/TypeDecl.h"
+#include "models/TypeExpr.h"
 #include "models/VarDecl.h"
 #include "utils/PrintUtils.h"
 
@@ -266,25 +266,25 @@ TEST(ConstDeclSuite, PrintConstDecl) {
 }
 
 // Type Expr Suite
-TEST(TypeExprSuite, PrintIDTypeExpr){
-  murphi::TypeExpr *a = new murphi::ID("test");
+TEST(TypeExprSuite, PrintIDTypeExpr) {
+  murphi::TypeExpr* a = new murphi::ID("test");
   EXPECT_STREQ(a->getAsString().c_str(), "test");
   delete a;
 }
 
-TEST(TypeExprSuite, IntegerSubrangePrint){
-  murphi::Expr *a = new murphi::IntExpr(0);
-  murphi::Expr *b = new murphi::IntExpr(5);
+TEST(TypeExprSuite, IntegerSubrangePrint) {
+  murphi::Expr* a = new murphi::IntExpr(0);
+  murphi::Expr* b = new murphi::IntExpr(5);
 
-  murphi::TypeExpr *c = new murphi::IntegerSubRange(a, b);
+  murphi::TypeExpr* c = new murphi::IntegerSubRange(a, b);
 
   EXPECT_STREQ(c->getAsString().c_str(), "0 .. 5");
 
   delete c;
 }
 
-TEST(TypeExprSuite, EnumPrint){
-  murphi::Enum *e = new murphi::Enum();
+TEST(TypeExprSuite, EnumPrint) {
+  murphi::Enum* e = new murphi::Enum();
   e->addEnum("val1");
   e->addEnum("val2");
   e->addEnum("random");
@@ -294,19 +294,16 @@ TEST(TypeExprSuite, EnumPrint){
   delete e;
 }
 
-TEST(TypeExprSuite, RecordPrint){
-  murphi::Record *r = new murphi::Record();
-  murphi::TypeExpr *at = new murphi::ID("test");
-  murphi::VarDecl *a = new murphi::VarDecl("init", at);
+TEST(TypeExprSuite, RecordPrint) {
+  murphi::Record* r = new murphi::Record();
+  murphi::TypeExpr* at = new murphi::ID("test");
+  murphi::VarDecl* a = new murphi::VarDecl("init", at);
   r->addVarDecl(a);
 
   EXPECT_STREQ(r->getAsString().c_str(), "record [init : test;];");
 
   delete r;
 }
-
-
-
 
 // Type Decl tests
 TEST(TypeDeclSuite, PrintsIdTypeExpression) {
@@ -334,17 +331,15 @@ TEST(VarDeclSuite, PrintsVarDeclsCorrectly) {
   delete varDecl;
 }
 
-
-
 // Utils
 
-TEST(UtilsSuite, Interleave){
+TEST(UtilsSuite, Interleave) {
   std::vector<std::string> s = {"hi", "hello", "bob", "plant", "steve"};
-  std::string out = murphi::utils::interleave(s,"|");
+  std::string out = murphi::utils::interleave(s, "|");
   EXPECT_STREQ(out.c_str(), "hi|hello|bob|plant|steve");
 }
 
-TEST(UtilsSuite, InterleaveComma){
+TEST(UtilsSuite, InterleaveComma) {
   std::vector<std::string> s = {"hi", "hello", "bob"};
   std::string out = murphi::utils::interleaveComma(s);
   EXPECT_STREQ(out.c_str(), "hi,hello,bob");
