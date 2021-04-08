@@ -29,6 +29,8 @@ add_library(murphi SHARED
   src/models/VarDecl.cpp
 
   src/utils/PrintUtils.cpp
+
+  src/proc/ProcDecl.cpp
 )
 
 # set the properties to export version and pupblic header for api
