@@ -23,6 +23,7 @@ add_library(murphi SHARED
   src/murphi.cpp 
   src/models/ConstDecl.cpp
   src/models/Decl.cpp 
+  src/models/Designator.cpp 
   src/models/Expr.cpp 
   src/models/Formal.cpp 
   src/models/TypeDecl.cpp
