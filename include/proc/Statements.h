@@ -71,4 +71,39 @@ class IfStmt : public Stmt {
   Stmts elseStmts;
 };
 
+/*
+        <switchstmt> ::= switch <expr>
+                           { case <expr> {, expr} : [ <stmts> ] }
+                           [ else [ <stmts> ] ]
+                         endswitch
+
+*/
+
+class CaseStmt : public Printable<CaseStmt> {
+ public:
+  CaseStmt(Expr* ce) { caseExprs.push_back(ce); }
+  ~CaseStmt() { caseExprs.clear(); }
+  std::string getAsString();
+  void addCaseExpr(Expr* e);
+  void addCaseStatement(Stmt* s);
+
+ private:
+  std::vector<Expr*> caseExprs;
+  Stmts caseStmts;
+};
+
+class SwitchStmt : public Stmt {
+ public:
+  SwitchStmt(Expr* switchExpr) : swExpr{switchExpr} {}
+  ~SwitchStmt() { delete swExpr; }
+  std::string getAsString();
+  void addCaseStmt(CaseStmt c) { caseStmts.push_back(c); };
+  void addElseStmt(Stmt* s) { elseStmts.addStatement(s); };
+
+ private:
+  Expr* swExpr;
+  std::vector<CaseStmt> caseStmts;
+  Stmts elseStmts;
+};
+
 }  // namespace murphi

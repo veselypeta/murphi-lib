@@ -444,3 +444,47 @@ TEST(StmtSuite, IfStmtThenElsePrint) {
 
   delete f;
 }
+
+TEST(StmtSuite, CaseStatment) {
+  // generate the guard
+  murphi::Expr* caseExpr = new murphi::Designator("GetM_Ack_D");
+  murphi::CaseStmt cstmt(caseExpr);
+  // case expr
+  murphi::Designator* des = new murphi::Designator("State");
+  murphi::Designator* val = new murphi::Designator("I");
+  murphi::Stmt* caseStmt = new murphi::Assignment(des, val);
+  // add the stament to the case body
+  cstmt.addCaseStatement(caseStmt);
+
+  EXPECT_STREQ(cstmt.getAsString().c_str(), "case GetM_Ack_D: State := I;");
+}
+
+TEST(StmtSuite, SwitchStatment) {
+  // generate the switch expression
+  murphi::Designator* swExpr = new murphi::Designator("cache_entry");
+  swExpr->addIndex("State");
+
+  // generate the swithc stmt obj
+  murphi::SwitchStmt switchStmt(swExpr);
+
+  // add a case stmt to the switch
+  murphi::Designator* caseExpr = new murphi::Designator("GetM_Ack_AD");
+  murphi::CaseStmt caseStmt = murphi::CaseStmt(caseExpr);
+  murphi::Designator* des = new murphi::Designator("cache_entry");
+  des->addIndex("State");
+  murphi::Designator* val = new murphi::Designator("M");
+  murphi::Stmt* csStmt = new murphi::Assignment(des, val);
+  caseStmt.addCaseStatement(csStmt);
+  switchStmt.addCaseStmt(caseStmt);
+
+  // add an else stmt
+  murphi::Designator* elseDes = new murphi::Designator("cache_entry");
+  elseDes->addIndex("State");
+  murphi::Designator* elseVal = new murphi::Designator("M_evict");
+  murphi::Assignment* elseStmt = new murphi::Assignment(elseDes, elseVal);
+  switchStmt.addElseStmt(elseStmt);
+
+  EXPECT_STREQ(switchStmt.getAsString().c_str(),
+               "switch cache_entry.State case GetM_Ack_AD: cache_entry.State "
+               ":= M; else cache_entry.State := M_evict; endswitch");
+}

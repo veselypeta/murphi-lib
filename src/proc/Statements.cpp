@@ -1,4 +1,5 @@
 #include "proc/Statements.h"
+#include "utils/PrintUtils.h"
 
 namespace murphi {
 
@@ -44,6 +45,40 @@ void IfStmt::addElseStatement(Stmt* s) {
 
 void IfStmt::addThenStatement(Stmt* s) {
   return thenStmts.addStatement(s);
+}
+
+// --- Case-Statement -- //
+
+std::string CaseStmt::getAsString() {
+  std::string s = "case ";
+  s += utils::interleaveComma(caseExprs);
+  s += ": ";
+  s += caseStmts.getAsString();
+  return s;
+}
+
+void CaseStmt::addCaseStatement(Stmt* s) {
+  caseStmts.addStatement(s);
+}
+
+void CaseStmt::addCaseExpr(Expr* e) {
+  caseExprs.push_back(e);
+}
+
+// --- Switch-Statement -- //
+std::string SwitchStmt::getAsString() {
+  std::string s = "switch ";
+  s += swExpr->getAsString();
+  for (auto cs : caseStmts) {
+    s += " ";
+    s += cs.getAsString();
+  }
+  if (!elseStmts.isEmpty()) {
+    s += " else ";
+    s += elseStmts.getAsString();
+  }
+  s += " endswitch";
+  return s;
 }
 
 }  // namespace murphi
