@@ -111,9 +111,8 @@ std::string AliasStmt::getAsString() {
 }
 
 // --- ProcCall-Statement -- //
-std::string ProcCall::getAsString(){
+std::string ProcCall::getAsString() {
   return id + "(" + utils::interleaveComma(exprs) + ")";
 }
-
 
 }  // namespace murphi

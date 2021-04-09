@@ -557,10 +557,9 @@ TEST(StmtSuite, AliasStmt) {
   EXPECT_STREQ(alias.getAsString().c_str(), expectedText.c_str());
 }
 
-
-TEST(StmtSuite, ProcCall){
+TEST(StmtSuite, ProcCall) {
   std::string expectedText = "foo(msg)";
-  murphi::Designator *des = new murphi::Designator("msg");
-  murphi::ProcCall pc("foo",des);
+  murphi::Designator* des = new murphi::Designator("msg");
+  murphi::ProcCall pc("foo", des);
   EXPECT_STREQ(pc.getAsString().c_str(), expectedText.c_str());
 }
