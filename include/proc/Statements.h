@@ -209,4 +209,23 @@ private:
   std::string msg;
 };
 
+/* <putstmt> ::= put ( <expr> | <string> ) */
+class PutStmt : public Stmt {
+public:
+  PutStmt(std::string val) : val{val}, type{STRING} {}
+  PutStmt(Expr *expr) : expr{expr}, type{EXPR} {}
+  ~PutStmt() {
+    if(this->type == EXPR){
+      delete expr;
+    }
+  }
+  virtual std::string getAsString();
+
+private:
+  typedef enum { STRING, EXPR } putType;
+  putType type;
+  Expr *expr;
+  std::string val;
+};
+
 } // namespace murphi

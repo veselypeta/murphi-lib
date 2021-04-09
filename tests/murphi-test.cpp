@@ -587,3 +587,13 @@ TEST(StmtSuite, AssertStmt) {
   EXPECT_STREQ(b.getAsString().c_str(), "assert tst");
 }
 
+TEST(StmtSuite, PutStmt) {
+  murphi::Designator *des = new murphi::Designator("cache");
+  murphi::PutStmt put(des);
+  EXPECT_STREQ(put.getAsString().c_str(), "put cache");
+
+  murphi::PutStmt put2("mystr");
+  EXPECT_STREQ(put2.getAsString().c_str(), "put \"mystr\"");
+}
+
+
