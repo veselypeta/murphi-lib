@@ -5,7 +5,9 @@
 #include "models/TypeDecl.h"
 #include "models/TypeExpr.h"
 #include "models/VarDecl.h"
+#include "models/Formal.h"
 #include "utils/PrintUtils.h"
+#include "proc/ProcDecl.h"
 
 // Test Module is printed correctly
 TEST(ModuleSuite, CorrectlyPrinting) {
@@ -332,15 +334,30 @@ TEST(VarDeclSuite, PrintsVarDeclsCorrectly) {
 }
 
 // Utils
-
 TEST(UtilsSuite, Interleave) {
   std::vector<std::string> s = {"hi", "hello", "bob", "plant", "steve"};
   std::string out = murphi::utils::interleave(s, "|");
   EXPECT_STREQ(out.c_str(), "hi|hello|bob|plant|steve");
+}
+TEST(UtilsSuite, InterleaveOne) {
+  std::vector<std::string> s = {"hi"};
+  std::string out = murphi::utils::interleave(s, "|");
+  EXPECT_STREQ(out.c_str(), "hi");
 }
 
 TEST(UtilsSuite, InterleaveComma) {
   std::vector<std::string> s = {"hi", "hello", "bob"};
   std::string out = murphi::utils::interleaveComma(s);
   EXPECT_STREQ(out.c_str(), "hi,hello,bob");
+}
+
+
+// -- Formal --
+TEST(FormalSuite, FormalPrint){
+  murphi::TypeExpr *t = new murphi::ID("cache");
+  murphi::Formal *f = new murphi::Formal("myIdent", t);
+
+  EXPECT_STREQ(f->getAsString().c_str(), "var myIdent : cache");
+
+  delete f;
 }

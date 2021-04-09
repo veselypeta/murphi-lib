@@ -1,11 +1,12 @@
 #include "proc/ProcDecl.h"
+#include "utils/PrintUtils.h"
 
 namespace murphi {
 namespace proc {
 
-std::string Function::getId() {
-  return id;
-}
+// ----- FUNCTION ----- //
+
+std::string Function::getId() { return id; }
 
 std::string Function::getAsString() {
   return "function " + getId() + "(" /* parameters*/ +
@@ -13,14 +14,22 @@ std::string Function::getAsString() {
          "begin" /*smts*/ + "end;";
 }
 
-std::string Procedure::getId() {
-  return id;
+void Function::addFormalParameter(Formal param) {
+  return params.push_back(param);
 }
+
+// ----- PROCEDURE ----- //
+
+std::string Procedure::getId() { return id; }
 
 std::string Procedure::getAsString() {
   return "procedure " + getId() + "(" /*parameters*/ + ");" +
          forwardDecls.getAsString() + "begin" /*stmts*/ + "end;";
 }
 
-}  // namespace proc
-}  // namespace murphi
+void Procedure::addFormalParameter(Formal param) {
+  return params.push_back(param);
+}
+
+} // namespace proc
+} // namespace murphi

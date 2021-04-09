@@ -24,6 +24,7 @@ add_library(murphi SHARED
   src/models/ConstDecl.cpp
   src/models/Decl.cpp 
   src/models/Expr.cpp 
+  src/models/Formal.cpp 
   src/models/TypeDecl.cpp
   src/models/TypeExpr.cpp
   src/models/VarDecl.cpp
