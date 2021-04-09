@@ -190,9 +190,22 @@ private:
 class ErrorStmt : public Stmt {
 public:
   explicit ErrorStmt(std::string msg) : msg{msg} {};
-  virtual std::string getAsString() {return "error \"" + msg + "\"";}
+  virtual std::string getAsString() { return "error \"" + msg + "\""; }
 
 private:
+  std::string msg;
+};
+
+/* <assertstmt> ::= assert <expr> [ <string> ] */
+class AssertStmt : public Stmt {
+public:
+  explicit AssertStmt(Expr *expr) : expr{expr} {}
+  explicit AssertStmt(Expr *expr, std::string msg) : expr{expr}, msg{msg} {}
+  ~AssertStmt() { delete expr; }
+  virtual std::string getAsString();
+
+private:
+  Expr *expr;
   std::string msg;
 };
 

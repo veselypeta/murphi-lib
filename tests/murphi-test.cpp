@@ -576,3 +576,14 @@ TEST(StmtSuite, ErrorStmt) {
   murphi::ErrorStmt es("crashed");
   EXPECT_STREQ(es.getAsString().c_str(), expectedText.c_str());
 }
+
+TEST(StmtSuite, AssertStmt) {
+  murphi::Designator *d1 = new murphi::Designator("obj");
+  murphi::AssertStmt a(d1, "assert failed");
+  EXPECT_STREQ(a.getAsString().c_str(), "assert obj \"assert failed\"");
+
+  murphi::Designator *d2 = new murphi::Designator("tst");
+  murphi::AssertStmt b(d2);
+  EXPECT_STREQ(b.getAsString().c_str(), "assert tst");
+}
+
