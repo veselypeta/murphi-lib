@@ -6,6 +6,7 @@
 #include "models/TypeDecl.h"
 #include "models/TypeExpr.h"
 #include "models/VarDecl.h"
+#include "models/Quantifier.h"
 #include "proc/ProcDecl.h"
 #include "proc/Statements.h"
 #include "utils/PrintUtils.h"
@@ -332,6 +333,15 @@ TEST(VarDeclSuite, PrintsVarDeclsCorrectly) {
   EXPECT_STREQ(varDecl->getAsString().c_str(), "cache : OBJSET_cache;");
 
   delete varDecl;
+}
+
+// Quantifier //
+TEST(QuantifierSuite, BasicQuantifier){
+  murphi::IntExpr *start = new murphi::IntExpr(0);
+  murphi::IntExpr *end = new murphi::IntExpr(10);
+  murphi::IntegerSubRange *range = new murphi::IntegerSubRange(start, end);
+  murphi::Quantifier q("i",range);
+  EXPECT_STREQ(q.getAsString().c_str(), "i : 0 .. 10");
 }
 
 // Utils
