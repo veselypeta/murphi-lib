@@ -1,6 +1,6 @@
 #include "models/Formal.h"
-#include "utils/PrintUtils.h"
 #include <string>
+#include "utils/PrintUtils.h"
 
 namespace murphi {
 // ----- FORMAL ----- //
@@ -12,5 +12,7 @@ std::string Formal::getAsString() {
          expr->getAsString();
 }
 
-void Formal::addFormalIdent(std::string id) { return ids.push_back(id); }
-} // namespace murphi
+void Formal::addFormalIdent(std::string id) {
+  return ids.push_back(id);
+}
+}  // namespace murphi

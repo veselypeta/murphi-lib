@@ -76,18 +76,18 @@ std::string ParenthExpr::getAsString() {
 
 // -- designator
 std::string Designator::getAsString() {
-    std::string s = id;
-    for (Container idx : indexes){
-        s += idx.getAsString();
-    }
-    return s;
+  std::string s = id;
+  for (Container idx : indexes) {
+    s += idx.getAsString();
+  }
+  return s;
 }
 
 void Designator::addIndex(std::string fieldId) {
-    indexes.push_back(Container(fieldId));
+  indexes.push_back(Container(fieldId));
 }
 
-void Designator::addIndex(Expr *arrayIndx) {
-    indexes.push_back(Container(arrayIndx));
+void Designator::addIndex(Expr* arrayIndx) {
+  indexes.push_back(Container(arrayIndx));
 }
 }  // namespace murphi

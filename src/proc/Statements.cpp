@@ -4,15 +4,19 @@ namespace murphi {
 
 std::string Stmts::getAsString() {
   std::string s;
-  for (auto *stmt : stmts) {
+  for (auto* stmt : stmts) {
     s += stmt->getAsString() + ";";
   }
   return s;
 }
 
-void Stmts::addStatement(Stmt *s) { return stmts.push_back(s); }
+void Stmts::addStatement(Stmt* s) {
+  return stmts.push_back(s);
+}
 
-bool Stmts::isEmpty() { return stmts.size() == 0; }
+bool Stmts::isEmpty() {
+  return stmts.size() == 0;
+}
 
 // --- Assignment -- //
 std::string Assignment::getAsString() {
@@ -26,7 +30,7 @@ std::string IfStmt::getAsString() {
   s += ifExpr->getAsString();
   s += " then ";
   s += thenStmts.getAsString();
-  if (!elseStmts.isEmpty()){
+  if (!elseStmts.isEmpty()) {
     s += " else ";
     s += elseStmts.getAsString();
   }
@@ -34,12 +38,12 @@ std::string IfStmt::getAsString() {
   return s;
 }
 
-void IfStmt::addElseStatement(Stmt *s){
+void IfStmt::addElseStatement(Stmt* s) {
   return elseStmts.addStatement(s);
 }
 
-void IfStmt::addThenStatement(Stmt *s){
+void IfStmt::addThenStatement(Stmt* s) {
   return thenStmts.addStatement(s);
 }
 
-} // namespace murphi
+}  // namespace murphi

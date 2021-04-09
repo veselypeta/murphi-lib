@@ -6,7 +6,9 @@ namespace proc {
 
 // ----- FUNCTION ----- //
 
-std::string Function::getId() { return id; }
+std::string Function::getId() {
+  return id;
+}
 
 std::string Function::getAsString() {
   return "function " + getId() + "(" /* parameters*/ +
@@ -20,7 +22,9 @@ void Function::addFormalParameter(Formal param) {
 
 // ----- PROCEDURE ----- //
 
-std::string Procedure::getId() { return id; }
+std::string Procedure::getId() {
+  return id;
+}
 
 std::string Procedure::getAsString() {
   return "procedure " + getId() + "(" /*parameters*/ + ");" +
@@ -31,5 +35,5 @@ void Procedure::addFormalParameter(Formal param) {
   return params.push_back(param);
 }
 
-} // namespace proc
-} // namespace murphi
+}  // namespace proc
+}  // namespace murphi
