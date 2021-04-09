@@ -108,7 +108,6 @@ private:
 };
 
 /* <forstmt> ::= for <quantifier> do [stmts] endfor*/
-
 class ForStmt : public Stmt {
 public:
   ForStmt(Quantifier *q) : quant{q} {}
@@ -117,6 +116,48 @@ public:
 
 private:
   Quantifier *quant;
+  Stmts stmts;
+};
+
+// <whilestmt> ::= while <expr> do [stmts] end //
+class WhileStmt : public Stmts {
+public:
+  WhileStmt(Expr *expr) : expr{expr} {}
+  ~WhileStmt() { delete expr; }
+  virtual std::string getAsString();
+  void addStatement(Stmt *s) { stmts.addStatement(s); }
+
+private:
+  Expr *expr;
+  Stmts stmts;
+};
+
+/*
+        <aliasstmt> ::= alias <alias> { ; <alias> } do [ <stmts> ] end
+
+        <alias> ::= <ID> : <expr>
+*/
+class Alias : public Printable<Alias> {
+public:
+  Alias(std::string id, Expr *expr) : id{id}, expr{expr} {}
+  ~Alias() { delete expr; }
+  std::string getAsString() { return id + " : " + expr->getAsString(); }
+
+private:
+  std::string id;
+  Expr *expr;
+};
+
+class AliasStmt : public Stmt {
+public:
+  explicit AliasStmt(Alias *a) { aliasses.push_back(a); }
+  virtual std::string getAsString();
+  void addStatement(Stmt *s){
+    stmts.addStatement(s);
+  }
+
+private:
+  std::vector<Alias *> aliasses;
   Stmts stmts;
 };
 
