@@ -23,7 +23,6 @@ add_library(murphi SHARED
   src/murphi.cpp 
   src/models/ConstDecl.cpp
   src/models/Decl.cpp 
-  src/models/Designator.cpp 
   src/models/Expr.cpp 
   src/models/Formal.cpp 
   src/models/TypeDecl.cpp
@@ -33,6 +32,7 @@ add_library(murphi SHARED
   src/utils/PrintUtils.cpp
 
   src/proc/ProcDecl.cpp
+  src/proc/Statements.cpp
 )
 
 # set the properties to export version and pupblic header for api
