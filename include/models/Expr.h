@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <vector>
+#include "interfaces/Printable.h"
 
 /*
  -- Grammar for expressions
@@ -31,7 +33,7 @@
 */
 namespace murphi {
 // Abstract Class Expression
-class Expr {
+class Expr : public Printable<Expr> {
  public:
   virtual std::string getAsString() = 0;
   virtual ~Expr(){};
@@ -46,6 +48,42 @@ class ParenthExpr : public Expr {
 
  private:
   Expr* ex;
+};
+
+// <designator>
+class Designator : public Expr {
+ public:
+  Designator(std::string id) : id{id} {}
+  ~Designator() {}
+  std::string getAsString();
+  void addIndex(std::string fieldId);
+  void addIndex(Expr* arrIndex);
+
+ private:
+  typedef enum { ID, EXPR } identOrExpr;
+  class Container {
+   public:
+    Container(std::string fieldId)
+        : fieldId{fieldId}, expr{nullptr}, type{ID} {}
+    Container(Expr* expr) : fieldId{""}, expr{expr}, type{EXPR} {}
+    ~Container() {
+      // TODO - there is a resource leak, not deleting expr
+    }
+    std::string getAsString() {
+      if (type == ID) {
+        return "." + fieldId;
+      } else {
+        return "[" + expr->getAsString() + "]";
+      }
+    }
+
+   private:
+    std::string fieldId;
+    Expr* expr;
+    identOrExpr type;
+  };
+  std::string id;
+  std::vector<Container> indexes;
 };
 
 // <integer-constant>
