@@ -566,7 +566,7 @@ TEST(StmtSuite, ProcCall) {
 
 TEST(StmtSuite, ClearStmt) {
   std::string expectedText = "clear cache_controller";
-  murphi::Designator *des = new murphi::Designator("cache_controller");
+  murphi::Designator* des = new murphi::Designator("cache_controller");
   murphi::ClearStmt cls(des);
   EXPECT_STREQ(cls.getAsString().c_str(), expectedText.c_str());
 }
