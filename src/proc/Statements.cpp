@@ -116,12 +116,20 @@ std::string AssertStmt::getAsString() {
 }
 
 // --- Put-Statement -- //
-std::string PutStmt::getAsString(){
-  if(type == EXPR){
-    return "put " + expr->getAsString();  
+std::string PutStmt::getAsString() {
+  if (type == EXPR) {
+    return "put " + expr->getAsString();
   }
   return "put \"" + val + "\"";
 }
 
+std::string ReturnStmt::getAsString() {
+  std::string s = "return";
+  if (expr != nullptr) {
+    s += " ";
+    s += expr->getAsString();
+  }
+  return s;
+}
 
 } // namespace murphi

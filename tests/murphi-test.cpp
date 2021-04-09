@@ -596,4 +596,16 @@ TEST(StmtSuite, PutStmt) {
   EXPECT_STREQ(put2.getAsString().c_str(), "put \"mystr\"");
 }
 
+TEST(StmtSuite, ReturnStmt) {
+
+  murphi::ReturnStmt rs;
+  EXPECT_STREQ(rs.getAsString().c_str(), "return");
+
+  murphi::Designator *des = new murphi::Designator("val");
+  murphi::ReturnStmt rv(des);
+  EXPECT_STREQ(rv.getAsString().c_str(), "return val");
+
+}
+
+
 

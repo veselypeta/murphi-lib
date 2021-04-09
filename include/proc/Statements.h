@@ -215,7 +215,7 @@ public:
   PutStmt(std::string val) : val{val}, type{STRING} {}
   PutStmt(Expr *expr) : expr{expr}, type{EXPR} {}
   ~PutStmt() {
-    if(this->type == EXPR){
+    if (this->type == EXPR) {
       delete expr;
     }
   }
@@ -226,6 +226,18 @@ private:
   putType type;
   Expr *expr;
   std::string val;
+};
+
+/* <returnstmt> ::= return [ <expr> ] */
+class ReturnStmt : public Stmt {
+public:
+  ReturnStmt() : expr{nullptr} {}
+  ReturnStmt(Expr *expr) : expr{expr} {}
+  ~ReturnStmt() { delete expr; }
+  virtual std::string getAsString();
+
+private:
+  Expr *expr;
 };
 
 } // namespace murphi
