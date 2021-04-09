@@ -81,4 +81,67 @@ std::string SwitchStmt::getAsString() {
   return s;
 }
 
+// --- For-Statement -- //
+std::string ForStmt::getAsString() {
+  return "for " + quant->getAsString() + " do " + stmts.getAsString() +
+         " endfor";
+}
+
+// --- While-Statement -- //
+std::string WhileStmt::getAsString() {
+  return "while " + expr->getAsString() + " do " + stmts.getAsString() + " end";
+}
+
+// --- Alias-Statement -- //
+std::string AliasStmt::getAsString() {
+  std::string s = "alias ";
+
+  // get aliases as vector of strings
+  std::vector<std::string> alnames;
+  for (auto al : aliasses) {
+    alnames.push_back(al->getAsString());
+  }
+
+  s += utils::interleave(alnames, ";");
+
+  s += " do ";
+  s += stmts.getAsString();
+  s += " end";
+  return s;
+}
+
+// --- ProcCall-Statement -- //
+std::string ProcCall::getAsString() {
+  return id + "(" + utils::interleaveComma(exprs) + ")";
+}
+
+// --- Assert-Statement -- //
+std::string AssertStmt::getAsString() {
+  std::string s = "assert ";
+  s += expr->getAsString();
+  if (msg != "") {
+    s += " \"";
+    s += msg;
+    s += "\"";
+  }
+  return s;
+}
+
+// --- Put-Statement -- //
+std::string PutStmt::getAsString() {
+  if (type == EXPR) {
+    return "put " + expr->getAsString();
+  }
+  return "put \"" + val + "\"";
+}
+
+std::string ReturnStmt::getAsString() {
+  std::string s = "return";
+  if (expr != nullptr) {
+    s += " ";
+    s += expr->getAsString();
+  }
+  return s;
+}
+
 }  // namespace murphi
