@@ -1,9 +1,9 @@
 #pragma once
+#include <string>
+#include <vector>
 #include "interfaces/Printable.h"
 #include "models/Expr.h"
 #include "models/Quantifier.h"
-#include <string>
-#include <vector>
 
 namespace murphi {
 /*
@@ -21,35 +21,35 @@ namespace murphi {
     | <returnstmt> -- function return --
               */
 class Stmt : public Printable<Stmt> {
-public:
+ public:
   virtual std::string getAsString() = 0;
   virtual ~Stmt() {}
 };
 
 // <stmts> ::= <stmt> {; [<stmt>] }
 class Stmts : public Printable<Stmts> {
-public:
+ public:
   std::string getAsString();
-  void addStatement(Stmt *s);
+  void addStatement(Stmt* s);
   bool isEmpty();
 
-private:
-  std::vector<Stmt *> stmts;
+ private:
+  std::vector<Stmt*> stmts;
 };
 
 // <assignment> ::= <designator> := <expression>
 class Assignment : public Stmt {
-public:
-  Assignment(Designator *des, Expr *expr) : des{des}, expr{expr} {}
+ public:
+  Assignment(Designator* des, Expr* expr) : des{des}, expr{expr} {}
   ~Assignment() {
     delete des;
     delete expr;
   }
   virtual std::string getAsString();
 
-private:
-  Designator *des;
-  Expr *expr;
+ private:
+  Designator* des;
+  Expr* expr;
 };
 
 /*
@@ -59,15 +59,15 @@ private:
                      endif
 */
 class IfStmt : public Stmt {
-public:
-  IfStmt(Expr *ifExpr) : ifExpr{ifExpr} {}
+ public:
+  IfStmt(Expr* ifExpr) : ifExpr{ifExpr} {}
   ~IfStmt() { delete ifExpr; }
   virtual std::string getAsString();
-  void addThenStatement(Stmt *s);
-  void addElseStatement(Stmt *s);
+  void addThenStatement(Stmt* s);
+  void addElseStatement(Stmt* s);
 
-private:
-  Expr *ifExpr;
+ private:
+  Expr* ifExpr;
   Stmts thenStmts;
   Stmts elseStmts;
 };
@@ -81,54 +81,54 @@ private:
 */
 
 class CaseStmt : public Printable<CaseStmt> {
-public:
-  CaseStmt(Expr *ce) { caseExprs.push_back(ce); }
+ public:
+  CaseStmt(Expr* ce) { caseExprs.push_back(ce); }
   ~CaseStmt() { caseExprs.clear(); }
   std::string getAsString();
-  void addCaseExpr(Expr *e);
-  void addCaseStatement(Stmt *s);
+  void addCaseExpr(Expr* e);
+  void addCaseStatement(Stmt* s);
 
-private:
-  std::vector<Expr *> caseExprs;
+ private:
+  std::vector<Expr*> caseExprs;
   Stmts caseStmts;
 };
 
 class SwitchStmt : public Stmt {
-public:
-  SwitchStmt(Expr *switchExpr) : swExpr{switchExpr} {}
+ public:
+  SwitchStmt(Expr* switchExpr) : swExpr{switchExpr} {}
   ~SwitchStmt() { delete swExpr; }
   virtual std::string getAsString();
   void addCaseStmt(CaseStmt c) { caseStmts.push_back(c); };
-  void addElseStmt(Stmt *s) { elseStmts.addStatement(s); };
+  void addElseStmt(Stmt* s) { elseStmts.addStatement(s); };
 
-private:
-  Expr *swExpr;
+ private:
+  Expr* swExpr;
   std::vector<CaseStmt> caseStmts;
   Stmts elseStmts;
 };
 
 /* <forstmt> ::= for <quantifier> do [stmts] endfor*/
 class ForStmt : public Stmt {
-public:
-  ForStmt(Quantifier *q) : quant{q} {}
+ public:
+  ForStmt(Quantifier* q) : quant{q} {}
   virtual std::string getAsString();
-  void addStatement(Stmt *s) { stmts.addStatement(s); }
+  void addStatement(Stmt* s) { stmts.addStatement(s); }
 
-private:
-  Quantifier *quant;
+ private:
+  Quantifier* quant;
   Stmts stmts;
 };
 
 // <whilestmt> ::= while <expr> do [stmts] end //
 class WhileStmt : public Stmts {
-public:
-  WhileStmt(Expr *expr) : expr{expr} {}
+ public:
+  WhileStmt(Expr* expr) : expr{expr} {}
   ~WhileStmt() { delete expr; }
   virtual std::string getAsString();
-  void addStatement(Stmt *s) { stmts.addStatement(s); }
+  void addStatement(Stmt* s) { stmts.addStatement(s); }
 
-private:
-  Expr *expr;
+ private:
+  Expr* expr;
   Stmts stmts;
 };
 
@@ -138,27 +138,25 @@ private:
         <alias> ::= <ID> : <expr>
 */
 class Alias : public Printable<Alias> {
-public:
-  Alias(std::string id, Expr *expr) : id{id}, expr{expr} {}
+ public:
+  Alias(std::string id, Expr* expr) : id{id}, expr{expr} {}
   ~Alias() { delete expr; }
   std::string getAsString() { return id + " : " + expr->getAsString(); }
 
-private:
+ private:
   std::string id;
-  Expr *expr;
+  Expr* expr;
 };
 
 class AliasStmt : public Stmt {
-public:
-  explicit AliasStmt(Alias *a) { aliasses.push_back(a); }
+ public:
+  explicit AliasStmt(Alias* a) { aliasses.push_back(a); }
   virtual std::string getAsString();
-  void addStatement(Stmt *s){
-    stmts.addStatement(s);
-  }
+  void addStatement(Stmt* s) { stmts.addStatement(s); }
 
-private:
-  std::vector<Alias *> aliasses;
+ private:
+  std::vector<Alias*> aliasses;
   Stmts stmts;
 };
 
-} // namespace murphi
+}  // namespace murphi
