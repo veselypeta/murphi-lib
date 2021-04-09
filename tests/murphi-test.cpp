@@ -498,3 +498,24 @@ TEST(StmtSuite, SwitchStatment) {
                "switch cache_entry.State case GetM_Ack_AD: cache_entry.State "
                ":= M; else cache_entry.State := M_evict; endswitch");
 }
+
+TEST(StmtSuite, ForStmt){
+  // generate the range to loop over
+  murphi::IntExpr *start = new murphi::IntExpr(0);
+  murphi::IntExpr *end = new murphi::IntExpr(10);
+  murphi::IntegerSubRange *range = new murphi::IntegerSubRange(start, end);
+  murphi::Quantifier *q = new murphi::Quantifier("i",range); 
+
+  murphi::ForStmt forStmt(q);
+
+  // add some statements
+  murphi::Designator *des = new murphi::Designator("cache_entry");
+  des->addIndex("State");
+  murphi::Designator *rhs = new murphi::Designator("I_load");
+  murphi::Assignment *as = new murphi::Assignment(des, rhs);
+
+  forStmt.addStatement(as);
+
+  EXPECT_STREQ(forStmt.getAsString().c_str(), "for i : 0 .. 10 do cache_entry.State := I_load; endfor");
+
+}

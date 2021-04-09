@@ -1,6 +1,7 @@
 #pragma once
 #include "interfaces/Printable.h"
 #include "models/Expr.h"
+#include "models/Quantifier.h"
 #include <string>
 #include <vector>
 
@@ -96,7 +97,7 @@ class SwitchStmt : public Stmt {
 public:
   SwitchStmt(Expr *switchExpr) : swExpr{switchExpr} {}
   ~SwitchStmt() { delete swExpr; }
-  std::string getAsString();
+  virtual std::string getAsString();
   void addCaseStmt(CaseStmt c) { caseStmts.push_back(c); };
   void addElseStmt(Stmt *s) { elseStmts.addStatement(s); };
 
@@ -104,6 +105,19 @@ private:
   Expr *swExpr;
   std::vector<CaseStmt> caseStmts;
   Stmts elseStmts;
+};
+
+/* <forstmt> ::= for <quantifier> do [stmts] endfor*/
+
+class ForStmt : public Stmt {
+public:
+  ForStmt(Quantifier *q) : quant{q} {}
+  virtual std::string getAsString();
+  void addStatement(Stmt *s) { stmts.addStatement(s); }
+
+private:
+  Quantifier *quant;
+  Stmts stmts;
 };
 
 } // namespace murphi

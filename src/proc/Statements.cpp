@@ -81,4 +81,9 @@ std::string SwitchStmt::getAsString() {
   return s;
 }
 
+// --- For-Statement -- //
+std::string ForStmt::getAsString(){
+  return "for " + quant->getAsString() + " do " + stmts.getAsString() + " endfor";
+}
+
 }  // namespace murphi
