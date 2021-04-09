@@ -570,3 +570,9 @@ TEST(StmtSuite, ClearStmt) {
   murphi::ClearStmt cls(des);
   EXPECT_STREQ(cls.getAsString().c_str(), expectedText.c_str());
 }
+
+TEST(StmtSuite, ErrorStmt) {
+  std::string expectedText = "error \"crashed\"";
+  murphi::ErrorStmt es("crashed");
+  EXPECT_STREQ(es.getAsString().c_str(), expectedText.c_str());
+}
