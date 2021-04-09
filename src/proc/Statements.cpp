@@ -5,15 +5,19 @@ namespace murphi {
 
 std::string Stmts::getAsString() {
   std::string s;
-  for (auto *stmt : stmts) {
+  for (auto* stmt : stmts) {
     s += stmt->getAsString() + ";";
   }
   return s;
 }
 
-void Stmts::addStatement(Stmt *s) { return stmts.push_back(s); }
+void Stmts::addStatement(Stmt* s) {
+  return stmts.push_back(s);
+}
 
-bool Stmts::isEmpty() { return stmts.size() == 0; }
+bool Stmts::isEmpty() {
+  return stmts.size() == 0;
+}
 
 // --- Assignment -- //
 std::string Assignment::getAsString() {
@@ -35,9 +39,13 @@ std::string IfStmt::getAsString() {
   return s;
 }
 
-void IfStmt::addElseStatement(Stmt *s) { return elseStmts.addStatement(s); }
+void IfStmt::addElseStatement(Stmt* s) {
+  return elseStmts.addStatement(s);
+}
 
-void IfStmt::addThenStatement(Stmt *s) { return thenStmts.addStatement(s); }
+void IfStmt::addThenStatement(Stmt* s) {
+  return thenStmts.addStatement(s);
+}
 
 // --- Case-Statement -- //
 
@@ -49,9 +57,13 @@ std::string CaseStmt::getAsString() {
   return s;
 }
 
-void CaseStmt::addCaseStatement(Stmt *s) { caseStmts.addStatement(s); }
+void CaseStmt::addCaseStatement(Stmt* s) {
+  caseStmts.addStatement(s);
+}
 
-void CaseStmt::addCaseExpr(Expr *e) { caseExprs.push_back(e); }
+void CaseStmt::addCaseExpr(Expr* e) {
+  caseExprs.push_back(e);
+}
 
 // --- Switch-Statement -- //
 std::string SwitchStmt::getAsString() {
@@ -132,4 +144,4 @@ std::string ReturnStmt::getAsString() {
   return s;
 }
 
-} // namespace murphi
+}  // namespace murphi

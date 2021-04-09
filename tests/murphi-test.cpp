@@ -578,17 +578,17 @@ TEST(StmtSuite, ErrorStmt) {
 }
 
 TEST(StmtSuite, AssertStmt) {
-  murphi::Designator *d1 = new murphi::Designator("obj");
+  murphi::Designator* d1 = new murphi::Designator("obj");
   murphi::AssertStmt a(d1, "assert failed");
   EXPECT_STREQ(a.getAsString().c_str(), "assert obj \"assert failed\"");
 
-  murphi::Designator *d2 = new murphi::Designator("tst");
+  murphi::Designator* d2 = new murphi::Designator("tst");
   murphi::AssertStmt b(d2);
   EXPECT_STREQ(b.getAsString().c_str(), "assert tst");
 }
 
 TEST(StmtSuite, PutStmt) {
-  murphi::Designator *des = new murphi::Designator("cache");
+  murphi::Designator* des = new murphi::Designator("cache");
   murphi::PutStmt put(des);
   EXPECT_STREQ(put.getAsString().c_str(), "put cache");
 
@@ -597,15 +597,10 @@ TEST(StmtSuite, PutStmt) {
 }
 
 TEST(StmtSuite, ReturnStmt) {
-
   murphi::ReturnStmt rs;
   EXPECT_STREQ(rs.getAsString().c_str(), "return");
 
-  murphi::Designator *des = new murphi::Designator("val");
+  murphi::Designator* des = new murphi::Designator("val");
   murphi::ReturnStmt rv(des);
   EXPECT_STREQ(rv.getAsString().c_str(), "return val");
-
 }
-
-
-
