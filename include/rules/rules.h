@@ -1,10 +1,10 @@
 #pragma once
+#include <string>
+#include <vector>
 #include "interfaces/Printable.h"
 #include "models/Decl.h"
 #include "models/Expr.h"
 #include "proc/Statements.h"
-#include <string>
-#include <vector>
 namespace murphi {
 /*
         <rule> ::= <simplerule>
@@ -14,7 +14,7 @@ namespace murphi {
                  | <aliasrule>
 */
 class Rule : public Printable<Rule> {
-public:
+ public:
   Rule() {}
   virtual ~Rule() {}
   virtual std::string getAsString() = 0;
@@ -22,14 +22,14 @@ public:
 
 /* <rules> ::= <rule> {; <rule> } [;] */
 class Rules : Printable<Rules> {
-public:
+ public:
   Rules() {}
   ~Rules() { rules.clear(); }
-  void addRule(Rule *r);
+  void addRule(Rule* r);
   std::string getAsString();
 
-private:
-  std::vector<Rule *> rules;
+ private:
+  std::vector<Rule*> rules;
 };
 
 /*
@@ -40,8 +40,8 @@ private:
                          end
 */
 class SimpleRule : public Rule {
-public:
-  SimpleRule(std::string ruleName, Expr *ruleExpr)
+ public:
+  SimpleRule(std::string ruleName, Expr* ruleExpr)
       : ruleName{ruleName}, ruleExpr{ruleExpr} {}
   ~SimpleRule() { delete ruleExpr; }
   virtual std::string getAsString();
@@ -51,9 +51,9 @@ public:
   Decls declarations;
   Stmts statements;
 
-private:
+ private:
   std::string ruleName;
-  Expr *ruleExpr;
+  Expr* ruleExpr;
 };
 
 /*
@@ -63,7 +63,7 @@ private:
                          end
 */
 class StartState : public Rule {
-public:
+ public:
   StartState() {}
   StartState(std::string startStateName) : startStateName{startStateName} {}
   virtual std::string getAsString();
@@ -71,7 +71,7 @@ public:
   Decls decls;
   Stmts statements;
 
-private:
+ private:
   std::string startStateName;
 };
 
@@ -79,16 +79,16 @@ private:
   <invariant> ::= invariant [ <string> ] <expr>
 */
 class Invariant : public Rule {
-public:
-  explicit Invariant(Expr *invExpr) : invExpr{invExpr} {}
-  Invariant(std::string invName, Expr *invExpr)
+ public:
+  explicit Invariant(Expr* invExpr) : invExpr{invExpr} {}
+  Invariant(std::string invName, Expr* invExpr)
       : invariantName{invName}, invExpr{invExpr} {}
   ~Invariant() { delete invExpr; }
   virtual std::string getAsString();
 
-private:
+ private:
   std::string invariantName;
-  Expr *invExpr;
+  Expr* invExpr;
 };
 
 /*
@@ -97,14 +97,14 @@ private:
 */
 
 class RuleSet : public Rule {
-public:
-  explicit RuleSet(Quantifier *q) { quants.push_back(q); };
-  void addRule(Rule *r) { rules.addRule(r); }
+ public:
+  explicit RuleSet(Quantifier* q) { quants.push_back(q); };
+  void addRule(Rule* r) { rules.addRule(r); }
   virtual std::string getAsString();
 
-private:
+ private:
   Rules rules;
-  std::vector<Quantifier *> quants;
+  std::vector<Quantifier*> quants;
 };
 
 /*
@@ -112,15 +112,15 @@ private:
 */
 
 class AliasRule : public Rule {
-public:
-  explicit AliasRule(Alias *a) { aliasses.push_back(a); }
+ public:
+  explicit AliasRule(Alias* a) { aliasses.push_back(a); }
   ~AliasRule() { aliasses.clear(); }
   virtual std::string getAsString();
-  void addRule(Rule *r) { rules.addRule(r); }
+  void addRule(Rule* r) { rules.addRule(r); }
 
-private:
-  std::vector<Alias *> aliasses;
+ private:
+  std::vector<Alias*> aliasses;
   Rules rules;
 };
 
-} // namespace murphi
+}  // namespace murphi

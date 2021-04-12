@@ -10,7 +10,9 @@ std::string Rules::getAsString() {
   return s;
 }
 
-void Rules::addRule(Rule *r) { rules.push_back(r); }
+void Rules::addRule(Rule* r) {
+  rules.push_back(r);
+}
 
 /*
         <simplerule> ::= rule [<string>]
@@ -36,7 +38,7 @@ std::string Invariant::getAsString() {
 
 std::string RuleSet::getAsString() {
   std::vector<std::string> qs;
-  for (auto *q : quants) {
+  for (auto* q : quants) {
     qs.push_back(q->getAsString());
   }
 
@@ -44,11 +46,12 @@ std::string RuleSet::getAsString() {
          rules.getAsString() + " end";
 }
 
-std::string AliasRule::getAsString(){
+std::string AliasRule::getAsString() {
   std::vector<std::string> al;
-  for(auto a : aliasses){
+  for (auto a : aliasses) {
     al.push_back(a->getAsString());
   }
-  return "alias " + utils::interleave(al, "; ") + " do " + rules.getAsString() + " end";
+  return "alias " + utils::interleave(al, "; ") + " do " + rules.getAsString() +
+         " end";
 }
-} // namespace murphi
+}  // namespace murphi
