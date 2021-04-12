@@ -2,7 +2,7 @@
 #include <string>
 namespace murphi {
 std::string VarDecl::getAsString() {
-  return getId() + " : " + expr->getAsString() + ";";
+  return getId() + " : " + expr->getAsString();
 }
 
 std::string VarDecl::getId() {

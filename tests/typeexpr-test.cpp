@@ -27,7 +27,7 @@ TEST(TypeExprSuite, EnumPrint) {
   e->addEnum("val2");
   e->addEnum("random");
 
-  EXPECT_STREQ(e->getAsString().c_str(), "enum {val1,val2,random};");
+  EXPECT_STREQ(e->getAsString().c_str(), "enum {val1,val2,random}");
 
   delete e;
 }
@@ -38,7 +38,7 @@ TEST(TypeExprSuite, RecordPrint) {
   murphi::VarDecl* a = new murphi::VarDecl("init", at);
   r->addVarDecl(a);
 
-  EXPECT_STREQ(r->getAsString().c_str(), "record [init : test;];");
+  EXPECT_STREQ(r->getAsString().c_str(), "record [init : test;]");
 
   delete r;
 }
@@ -50,7 +50,7 @@ TEST(TypeDeclSuite, PrintsIdTypeExpression) {
   murphi::TypeExpr* idTyExpr = new murphi::ID("NrCaches");
   murphi::TypeDecl* tDecl = new murphi::TypeDecl(tId, idTyExpr);
 
-  std::string expected = "myType : NrCaches;";
+  std::string expected = "myType : NrCaches";
 
   EXPECT_STREQ(tDecl->getAsString().c_str(), expected.c_str());
 

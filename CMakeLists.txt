@@ -33,6 +33,8 @@ add_library(murphi SHARED
 
   src/proc/ProcDecl.cpp
   src/proc/Statements.cpp
+
+  src/rules/rules.cpp
 )
 
 # set the properties to export version and pupblic header for api
@@ -66,6 +68,7 @@ add_executable(
   tests/printutils-test.cpp
   tests/typeexpr-test.cpp
   tests/expr-test.cpp
+  tests/rules-test.cpp
 )
 
 target_include_directories(murphi-test PRIVATE include)

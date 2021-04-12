@@ -13,7 +13,7 @@ std::string IntegerSubRange::getAsString() {
 }
 
 std::string Enum::getAsString() {
-  return "enum {" + utils::interleaveComma(es) + "};";
+  return "enum {" + utils::interleaveComma(es) + "}";
 }
 
 void Enum::addEnum(std::string enumValue) {
@@ -25,7 +25,7 @@ std::string Record::getAsString() {
   for (auto vd : body) {
     s += vd->getAsString();
   }
-  s += "];";
+  s += "]";
   return s;
 }
 

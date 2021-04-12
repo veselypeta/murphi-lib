@@ -38,7 +38,7 @@ class Function : public ProcDecl {
   std::string id;
   TypeExpr* rv;
   std::vector<Formal> params;
-  Decl forwardDecls;
+  Decls forwardDecls;
   // stmts
 };
 
@@ -55,7 +55,7 @@ class Procedure : public ProcDecl {
  private:
   std::string id;
   std::vector<Formal> params;
-  Decl forwardDecls;
+  Decls forwardDecls;
   // stmts
 };
 
