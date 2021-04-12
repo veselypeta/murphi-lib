@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
 #include "models/TypeExpr.h"
+#include <gtest/gtest.h>
 #include "models/TypeDecl.h"
 #include "models/VarDecl.h"
 

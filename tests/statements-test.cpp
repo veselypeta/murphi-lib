@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
 #include "proc/Statements.h"
+#include <gtest/gtest.h>
 
 // Statments
 TEST(StmtSuite, AssignmentPrint) {
