@@ -69,6 +69,7 @@ add_executable(
   tests/typeexpr-test.cpp
   tests/expr-test.cpp
   tests/rules-test.cpp
+  tests/decls-test.cpp
 )
 
 target_include_directories(murphi-test PRIVATE include)

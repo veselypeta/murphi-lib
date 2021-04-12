@@ -37,11 +37,9 @@ TEST(ModuleSuite, CorrectlyPrinting) {
   std::string expectedString =
       "\
 const NrCaches : 4; \
-complex : 6 + 5; \
-type \
-myType : idType; \
-var \
-myVar : OBJSET_cache;\
+const complex : 6 + 5; \
+type myType : idType; \
+var myVar : OBJSET_cache;\
 ";
 
   ASSERT_STREQ(m.getAsString().c_str(), expectedString.c_str());

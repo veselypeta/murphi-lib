@@ -21,6 +21,8 @@ public:
 /* <rules> ::= <rule> {; <rule> } [;] */
 class Rules : Printable<Rules> {
 public:
+  Rules(){}
+  virtual ~Rules(){}
   void addRule(Rule *r);
   std::string getAsString();
 
@@ -39,6 +41,9 @@ class SimpleRule : Rule {
 public:
   SimpleRule(std::string ruleName, Expr *ruleExpr)
       : ruleName{ruleName}, ruleExpr{ruleExpr} {}
+  ~SimpleRule(){
+    delete ruleExpr;
+  }
   virtual std::string getAsString();
 
   // These fields are public to allow the library user to do things such as .

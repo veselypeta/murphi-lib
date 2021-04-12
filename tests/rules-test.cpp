@@ -3,14 +3,14 @@
 
 TEST(RulesSuite, SimpleRulePrint) {
   std::string expectedText =
-      "rule \"cache_I_load\" ==> begin SEND_cache_I_load(adr, m) end";
+      "rule \"cache_I_load\" cache.State = cache_I ==>  begin SEND_cache_I_load(adr,m); end";
   // create a rule expr
   murphi::Designator *des = new murphi::Designator("cache");
   des->addIndex("State");
   murphi::Designator *desState = new murphi::Designator("cache_I");
   murphi::EQExpr *rulExp = new murphi::EQExpr(des, desState);
 
-  murphi::SimpleRule sr("myRule", rulExp);
+  murphi::SimpleRule sr("cache_I_load", rulExp);
 
   // generate the stmt
   murphi::Designator *firstArg = new murphi::Designator("adr");
