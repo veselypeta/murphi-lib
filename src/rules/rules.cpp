@@ -18,4 +18,8 @@ std::string StartState::getAsString() {
   return "startstate \"" + startStateName + "\" " + decls.getAsString() +
          " begin " + statements.getAsString() + " end";
 }
+
+std::string Invariant::getAsString(){
+  return "invariant \"" + invariantName + "\" " + invExpr->getAsString();
+};
 } // namespace murphi

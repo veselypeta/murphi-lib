@@ -47,3 +47,28 @@ TEST(RulesSuite, StartStatePrint){
 
   EXPECT_STREQ(ss.getAsString().c_str(), "startstate \"initialization\" const maxValue : 7; begin cache.State := cache_I; end");
 }
+
+
+TEST(RuleSuite, InvariantPrint){
+
+  murphi::Designator *des = new murphi::Designator("cache");
+  des->addIndex("State");
+  murphi::Designator *st = new murphi::Designator("cache_I");
+  murphi::EQExpr *eq = new murphi::EQExpr(des, st);
+
+  murphi::Invariant inv("Write Serialization", eq);
+  
+  EXPECT_STREQ(inv.getAsString().c_str(), "invariant \"Write Serialization\" cache.State = cache_I" );
+}
+
+TEST(RuleSuite, InvariantPrintWOName){
+
+  murphi::Designator *des = new murphi::Designator("cache");
+  des->addIndex("State");
+  murphi::Designator *st = new murphi::Designator("cache_I");
+  murphi::EQExpr *eq = new murphi::EQExpr(des, st);
+
+  murphi::Invariant inv(eq);
+  
+  EXPECT_STREQ(inv.getAsString().c_str(), "invariant \"\" cache.State = cache_I" );
+}

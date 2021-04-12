@@ -73,4 +73,20 @@ private:
   std::string startStateName;
 };
 
+/*
+  <invariant> ::= invariant [ <string> ] <expr>
+*/
+class Invariant : Rule {
+public:
+  explicit Invariant(Expr *invExpr) : invExpr{invExpr} {}
+  Invariant(std::string invName, Expr *invExpr)
+      : invariantName{invName}, invExpr{invExpr} {}
+  ~Invariant() { delete invExpr; }
+  virtual std::string getAsString();
+
+private:
+  std::string invariantName;
+  Expr *invExpr;
+};
+
 } // namespace murphi
