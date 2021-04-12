@@ -38,7 +38,7 @@ TEST(TypeExprSuite, RecordPrint) {
   murphi::VarDecl* a = new murphi::VarDecl("init", at);
   r->addVarDecl(a);
 
-  EXPECT_STREQ(r->getAsString().c_str(), "record [init : test;]");
+  EXPECT_STREQ(r->getAsString().c_str(), "record init : test;");
 
   delete r;
 }
