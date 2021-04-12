@@ -60,7 +60,12 @@ enable_testing()
 
 add_executable(
   murphi-test
-  tests/murphi-test.cpp
+  tests/module-test.cpp
+  tests/statements-test.cpp
+  tests/designator-test.cpp
+  tests/printutils-test.cpp
+  tests/typeexpr-test.cpp
+  tests/expr-test.cpp
 )
 
 target_include_directories(murphi-test PRIVATE include)
