@@ -1,30 +1,33 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "interfaces/Identifyable.h"
 #include "interfaces/Printable.h"
-#include "models/ConstDecl.h"
-#include "models/TypeDecl.h"
-#include "models/VarDecl.h"
 
 namespace murphi {
-class Decl : public Printable<Decl> {
+
+/*
+        <decl> ::=	const { <constdecl> ; }
+                 |	type { <typedecl> ; }
+                 |	var { <vardecl> ; }
+
+*/
+class IDecl : public Printable<IDecl>, Identifyable<IDecl> {
  public:
-  Decl() {}
-  ~Decl() {
-    constDecls.clear();
-    typeDecls.clear();
-    varDecls.clear();
-  }
-  void addConstDecl(ConstDecl* cd) { constDecls.push_back(cd); }
-  void addTypeDecl(TypeDecl* td) { typeDecls.push_back(td); }
-  void addVarDecl(VarDecl* vd) { varDecls.push_back(vd); }
+  IDecl() {}
+  virtual ~IDecl() {}
+  virtual std::string getAsString() = 0;
+  virtual std::string getId() = 0;
+};
+
+class Decls : Printable<Decls> {
+ public:
   std::string getAsString();
+  void addDecl(IDecl* decl) { decls.push_back(decl); };
   bool isValidReference(std::string id);
 
  private:
-  std::vector<ConstDecl*> constDecls;
-  std::vector<TypeDecl*> typeDecls;
-  std::vector<VarDecl*> varDecls;
+  std::vector<IDecl*> decls;
 };
 
 }  // namespace murphi

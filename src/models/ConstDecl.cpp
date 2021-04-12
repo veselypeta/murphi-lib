@@ -5,7 +5,7 @@
 namespace murphi {
 
 std::string ConstDecl::getAsString() {
-  return id + " : " + expression->getAsString() + ";";
+  return id + " : " + expression->getAsString();
 }
 
 std::string ConstDecl::getId() {

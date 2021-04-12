@@ -1,40 +1,27 @@
 #include "models/Decl.h"
+#include <string>
 #include "models/ConstDecl.h"
 #include "models/TypeDecl.h"
+#include "models/VarDecl.h"
+#include "utils/PrintUtils.h"
 
 namespace murphi {
-std::string Decl::getAsString() {
-  // print the const decls
-  std::string s;
-  s += "const \n";
-  for (ConstDecl* cd : constDecls) {
-    s += "\t" + cd->getAsString() + "\n";
-  }
-
-  // print the type decls
-  s += "type \n";
-  for (TypeDecl* td : typeDecls) {
-    s += "\t" + td->getAsString() + "\n";
-  }
-
-  s += "var \n";
-  for (VarDecl* vd : varDecls) {
-    s += "\t" + vd->getAsString() + "\n";
-  }
-  return s;
-}
-
-bool Decl::isValidReference(std::string id) {
-  // Check the consts
-  for (ConstDecl* cd : constDecls) {
-    if (cd->getId() == id) {
-      return true;
+std::string Decls::getAsString() {
+  std::vector<std::string> text;
+  for (IDecl* dec : decls) {
+    if (murphi::ConstDecl* cd = dynamic_cast<murphi::ConstDecl*>(dec)) {
+      text.push_back("const " + cd->getAsString() + ";");
+    } else if (murphi::TypeDecl* cd = dynamic_cast<murphi::TypeDecl*>(dec)) {
+      text.push_back("type " + cd->getAsString() + ";");
+    } else if (murphi::VarDecl* cd = dynamic_cast<murphi::VarDecl*>(dec)) {
+      text.push_back("var " + cd->getAsString() + ";");
     }
   }
-
-  // Check the TypeDefs
-  for (TypeDecl* td : typeDecls) {
-    if (td->getId() == id) {
+  return utils::interleave(text, " ");
+}
+bool Decls::isValidReference(std::string id) {
+  for (IDecl* d : decls) {
+    if (d->getId() == id) {
       return true;
     }
   }

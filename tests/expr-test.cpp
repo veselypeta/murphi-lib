@@ -200,7 +200,7 @@ TEST(ConstDeclSuite, PrintConstDecl) {
 
   murphi::ConstDecl* constDecl = new murphi::ConstDecl("tmpSummation", p);
 
-  ASSERT_STREQ(constDecl->getAsString().c_str(), "tmpSummation : (8 + 44);");
+  ASSERT_STREQ(constDecl->getAsString().c_str(), "tmpSummation : (8 + 44)");
 
   delete constDecl;
 }
@@ -212,7 +212,7 @@ TEST(VarDeclSuite, PrintsVarDeclsCorrectly) {
   murphi::VarDecl* varDecl = new murphi::VarDecl(vId, texpr);
 
   EXPECT_STREQ(varDecl->getId().c_str(), "cache");
-  EXPECT_STREQ(varDecl->getAsString().c_str(), "cache : OBJSET_cache;");
+  EXPECT_STREQ(varDecl->getAsString().c_str(), "cache : OBJSET_cache");
 
   delete varDecl;
 }

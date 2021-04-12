@@ -1,13 +1,12 @@
 #pragma once
 #include <string>
-#include "interfaces/Identifyable.h"
-#include "interfaces/Printable.h"
+#include "models/Decl.h"
 #include "models/TypeExpr.h"
 
 namespace murphi {
-class VarDecl : public Printable<VarDecl>, public Identifyable<VarDecl> {
+class VarDecl : public IDecl {
  public:
-  VarDecl(std::string id, TypeExpr* expr) : id(id), expr(expr) {}
+  VarDecl(std::string id, TypeExpr* expr) : id{id}, expr{expr} {}
   ~VarDecl() { delete expr; }
   std::string getAsString();
   std::string getId();

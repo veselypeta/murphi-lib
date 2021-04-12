@@ -40,6 +40,6 @@ etc.)
   void dump();
 
  private:
-  Decl decls;
+  Decls decls;
 };
 }  // namespace murphi

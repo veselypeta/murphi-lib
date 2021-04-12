@@ -10,22 +10,22 @@
 namespace murphi {
 
 void Module::addConstDecl(std::string id, murphi::Expr* expr) {
-  murphi::ConstDecl* constDecl = new murphi::ConstDecl(id, expr);
-  decls.addConstDecl(constDecl);
+  murphi::ConstDecl* cd = new murphi::ConstDecl(id, expr);
+  decls.addDecl(cd);
 }
 
 void Module::addTypeDecl(std::string id, TypeExpr* expr) {
   murphi::TypeDecl* tDecl = new murphi::TypeDecl(id, expr);
-  decls.addTypeDecl(tDecl);
+  decls.addDecl(tDecl);
 }
 
 void Module::addVarDecl(std::string id, TypeExpr* expr) {
   murphi::VarDecl* vdecl = new murphi::VarDecl(id, expr);
-  decls.addVarDecl(vdecl);
+  decls.addDecl(vdecl);
 }
 
 bool Module::isVaidReference(std::string id) {
-  return decls.isValidReference(id) /* || otherObject() ....*/;
+  return decls.isValidReference(id);
 }
 
 std::string Module::getAsString() {
