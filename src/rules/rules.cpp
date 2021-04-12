@@ -1,6 +1,17 @@
 #include "rules/rules.h"
 
 namespace murphi {
+
+std::string Rules::getAsString() {
+  std::string s;
+  for (auto rule : rules) {
+    s += rule->getAsString() + ";";
+  }
+  return s;
+}
+
+void Rules::addRule(Rule *r) { rules.push_back(r); }
+
 /*
         <simplerule> ::= rule [<string>]
                            [ <expr> ==> ]
@@ -19,7 +30,17 @@ std::string StartState::getAsString() {
          " begin " + statements.getAsString() + " end";
 }
 
-std::string Invariant::getAsString(){
+std::string Invariant::getAsString() {
   return "invariant \"" + invariantName + "\" " + invExpr->getAsString();
 };
+
+std::string RuleSet::getAsString() {
+  std::vector<std::string> qs;
+  for (auto *q : quants) {
+    qs.push_back(q->getAsString());
+  }
+
+  return "ruleset " + utils::interleave(qs, "; ") + " do " +
+         rules.getAsString() + " end";
+}
 } // namespace murphi

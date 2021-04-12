@@ -13,8 +13,10 @@ namespace murphi {
                  | <ruleset>
                  | <aliasrule>
 */
-class Rule : Printable<Rule> {
+class Rule : public Printable<Rule> {
 public:
+  Rule() {}
+  virtual ~Rule() {}
   virtual std::string getAsString() = 0;
 };
 
@@ -22,9 +24,9 @@ public:
 class Rules : Printable<Rules> {
 public:
   Rules() {}
-  virtual ~Rules() {}
+  ~Rules() { rules.clear(); }
   void addRule(Rule *r);
-  virtual std::string getAsString() = 0;
+  std::string getAsString();
 
 private:
   std::vector<Rule *> rules;
@@ -37,7 +39,7 @@ private:
                            [ stmts ]
                          end
 */
-class SimpleRule : Rule {
+class SimpleRule : public Rule {
 public:
   SimpleRule(std::string ruleName, Expr *ruleExpr)
       : ruleName{ruleName}, ruleExpr{ruleExpr} {}
@@ -60,7 +62,7 @@ private:
                            [ <stmts> ]
                          end
 */
-class StartState : Rule {
+class StartState : public Rule {
 public:
   StartState() {}
   StartState(std::string startStateName) : startStateName{startStateName} {}
@@ -76,7 +78,7 @@ private:
 /*
   <invariant> ::= invariant [ <string> ] <expr>
 */
-class Invariant : Rule {
+class Invariant : public Rule {
 public:
   explicit Invariant(Expr *invExpr) : invExpr{invExpr} {}
   Invariant(std::string invName, Expr *invExpr)
@@ -89,4 +91,19 @@ private:
   Expr *invExpr;
 };
 
+/*
+        <ruleset> ::= ruleset <quantifier>
+                      {; <quantifier> } do [<rules>] end
+*/
+
+class RuleSet : public Rule {
+public:
+  RuleSet(Quantifier *q) { quants.push_back(q); };
+  void addRule(Rule *r) { rules.addRule(r); }
+  virtual std::string getAsString();
+
+private:
+  Rules rules;
+  std::vector<Quantifier *> quants;
+};
 } // namespace murphi
