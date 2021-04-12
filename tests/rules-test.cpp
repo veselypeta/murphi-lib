@@ -1,6 +1,7 @@
 #include "models/ConstDecl.h"
-#include "models/TypeExpr.h"
 #include "models/Quantifier.h"
+#include "models/TypeExpr.h"
+#include "proc/Statements.h"
 #include "rules/rules.h"
 #include <gtest/gtest.h>
 
@@ -91,7 +92,6 @@ TEST(RuleSuite, RuleSetPrint) {
   murphi::Quantifier *q = new murphi::Quantifier("m", id);
   murphi::RuleSet rs(q);
 
-
   EXPECT_STREQ(rs.getAsString().c_str(), "ruleset m : OBJSET_cache do  end");
 
   // create a rule expr
@@ -113,5 +113,42 @@ TEST(RuleSuite, RuleSetPrint) {
 
   rs.addRule(sr);
 
-  EXPECT_STREQ(rs.getAsString().c_str(), "ruleset m : OBJSET_cache do rule \"cache_I_load\" cache.State = cache_I ==>  begin SEND_cache_I_load(adr,m); end; end");
+  EXPECT_STREQ(rs.getAsString().c_str(),
+               "ruleset m : OBJSET_cache do rule \"cache_I_load\" cache.State "
+               "= cache_I ==>  begin SEND_cache_I_load(adr,m); end; end");
+}
+
+TEST(RuleSuite, AliasRulePrint) {
+
+  murphi::Designator *aldes = new murphi::Designator("i_cache");
+  murphi::Designator *m = new murphi::Designator("m");
+  aldes->addIndex(m);
+
+  murphi::Alias *ali = new murphi::Alias("cle", aldes);
+
+  murphi::AliasRule ar(ali);
+
+  EXPECT_STREQ(ar.getAsString().c_str(), "alias cle : i_cache[m] do  end");
+
+  // create a rule expr
+  murphi::Designator *des = new murphi::Designator("cache");
+  des->addIndex("State");
+  murphi::Designator *desState = new murphi::Designator("cache_I");
+  murphi::EQExpr *rulExp = new murphi::EQExpr(des, desState);
+
+  murphi::SimpleRule *sr = new murphi::SimpleRule("cache_I_load", rulExp);
+  // generate the stmt
+  murphi::Designator *firstArg = new murphi::Designator("adr");
+  murphi::Designator *secondArg = new murphi::Designator("m");
+  murphi::ProcCall *procCallStmt =
+      new murphi::ProcCall("SEND_cache_I_load", firstArg);
+  procCallStmt->addArgument(secondArg);
+
+  sr->statements.addStatement(procCallStmt);
+
+  ar.addRule(sr);
+
+  EXPECT_STREQ(ar.getAsString().c_str(),
+               "alias cle : i_cache[m] do rule \"cache_I_load\" cache.State "
+               "= cache_I ==>  begin SEND_cache_I_load(adr,m); end; end");
 }

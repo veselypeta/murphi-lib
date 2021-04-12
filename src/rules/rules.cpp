@@ -43,4 +43,12 @@ std::string RuleSet::getAsString() {
   return "ruleset " + utils::interleave(qs, "; ") + " do " +
          rules.getAsString() + " end";
 }
+
+std::string AliasRule::getAsString(){
+  std::vector<std::string> al;
+  for(auto a : aliasses){
+    al.push_back(a->getAsString());
+  }
+  return "alias " + utils::interleave(al, "; ") + " do " + rules.getAsString() + " end";
+}
 } // namespace murphi

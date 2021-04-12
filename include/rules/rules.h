@@ -98,7 +98,7 @@ private:
 
 class RuleSet : public Rule {
 public:
-  RuleSet(Quantifier *q) { quants.push_back(q); };
+  explicit RuleSet(Quantifier *q) { quants.push_back(q); };
   void addRule(Rule *r) { rules.addRule(r); }
   virtual std::string getAsString();
 
@@ -106,4 +106,21 @@ private:
   Rules rules;
   std::vector<Quantifier *> quants;
 };
+
+/*
+        <aliasrule> ::= alias <alias> {; <alias> } do [<rules>] end
+*/
+
+class AliasRule : public Rule {
+public:
+  explicit AliasRule(Alias *a) { aliasses.push_back(a); }
+  ~AliasRule() { aliasses.clear(); }
+  virtual std::string getAsString();
+  void addRule(Rule *r) { rules.addRule(r); }
+
+private:
+  std::vector<Alias *> aliasses;
+  Rules rules;
+};
+
 } // namespace murphi
