@@ -21,10 +21,10 @@ public:
 /* <rules> ::= <rule> {; <rule> } [;] */
 class Rules : Printable<Rules> {
 public:
-  Rules(){}
-  virtual ~Rules(){}
+  Rules() {}
+  virtual ~Rules() {}
   void addRule(Rule *r);
-  std::string getAsString();
+  virtual std::string getAsString() = 0;
 
 private:
   std::vector<Rule *> rules;
@@ -41,9 +41,7 @@ class SimpleRule : Rule {
 public:
   SimpleRule(std::string ruleName, Expr *ruleExpr)
       : ruleName{ruleName}, ruleExpr{ruleExpr} {}
-  ~SimpleRule(){
-    delete ruleExpr;
-  }
+  ~SimpleRule() { delete ruleExpr; }
   virtual std::string getAsString();
 
   // These fields are public to allow the library user to do things such as .
@@ -54,6 +52,25 @@ public:
 private:
   std::string ruleName;
   Expr *ruleExpr;
+};
+
+/*
+        <startstate> ::= startstate [ <string> ]
+                           [ { <decl> } begin ]
+                           [ <stmts> ]
+                         end
+*/
+class StartState : Rule {
+public:
+  StartState() {}
+  StartState(std::string startStateName) : startStateName{startStateName} {}
+  virtual std::string getAsString();
+
+  Decls decls;
+  Stmts statements;
+
+private:
+  std::string startStateName;
 };
 
 } // namespace murphi

@@ -1,4 +1,5 @@
 #include "rules/rules.h"
+#include "models/ConstDecl.h"
 #include <gtest/gtest.h>
 
 TEST(RulesSuite, SimpleRulePrint) {
@@ -22,4 +23,27 @@ TEST(RulesSuite, SimpleRulePrint) {
   sr.statements.addStatement(procCallStmt);
 
   EXPECT_STREQ(sr.getAsString().c_str(), expectedText.c_str());
+}
+
+TEST(RulesSuite, StartStatePrint){
+  
+  murphi::StartState ss("initialization");
+  EXPECT_STREQ(ss.getAsString().c_str(), "startstate \"initialization\"  begin  end");
+
+  // add a statement
+  murphi::Designator *lhs = new murphi::Designator("cache");
+  lhs->addIndex("State");
+  murphi::Designator *rhs = new murphi::Designator("cache_I");
+  murphi::Assignment *ass = new murphi::Assignment(lhs, rhs);
+
+  ss.statements.addStatement(ass);
+
+  EXPECT_STREQ(ss.getAsString().c_str(), "startstate \"initialization\"  begin cache.State := cache_I; end");
+
+  // add a decl
+  murphi::IntExpr *maxVal = new murphi::IntExpr(7);
+  murphi::ConstDecl *cd = new murphi::ConstDecl("maxValue", maxVal);
+  ss.decls.addDecl(cd);
+
+  EXPECT_STREQ(ss.getAsString().c_str(), "startstate \"initialization\" const maxValue : 7; begin cache.State := cache_I; end");
 }

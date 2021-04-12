@@ -13,4 +13,9 @@ std::string SimpleRule::getAsString() {
          declarations.getAsString() + " begin " + statements.getAsString() +
          " end";
 }
+
+std::string StartState::getAsString() {
+  return "startstate \"" + startStateName + "\" " + decls.getAsString() +
+         " begin " + statements.getAsString() + " end";
+}
 } // namespace murphi
