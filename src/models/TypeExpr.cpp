@@ -31,4 +31,13 @@ std::string Record::getAsString() {
 void Record::addVarDecl(VarDecl* vd) {
   body.push_back(vd);
 }
+
+std::string ScalarSet::getAsString(){
+  return "SCALARSET( " + expr->getAsString() + " )";
+}
+
+std::string Union::getAsString(){
+  return "UNION{" + utils::interleaveComma(elems) + "}";
+}
+
 }  // namespace murphi
