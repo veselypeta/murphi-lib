@@ -235,3 +235,21 @@ TEST(FormalSuite, FormalPrint) {
 
   delete f;
 }
+
+// IsUndef
+TEST(IsUndefSuite, IsUndefPrint){
+  murphi::Designator *des = new murphi::Designator("cache");
+  murphi::IsUndefExpr ex(des);
+
+  EXPECT_STREQ(ex.getAsString().c_str(), "ISUNDEFINED( cache )");
+}
+
+// IsMember
+TEST(IsMemberSuite, IsMemberPrint){
+  murphi::Designator *des = new murphi::Designator("directory");
+  murphi::ID *dirTy = new murphi::ID("Directory_ENTRY");
+
+  murphi::IsMemberExpr ismem(des, dirTy);
+
+  EXPECT_STREQ(ismem.getAsString().c_str(), "ISMEMBER( directory,Directory_ENTRY )");
+}

@@ -1,6 +1,7 @@
 #include "models/TypeDecl.h"
 #include "models/TypeExpr.h"
 #include "models/VarDecl.h"
+#include "models/Expr.h"
 #include <gtest/gtest.h>
 
 // Type Expr Suite

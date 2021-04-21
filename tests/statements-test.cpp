@@ -203,3 +203,11 @@ TEST(StmtSuite, ReturnStmt) {
   murphi::ReturnStmt rv(des);
   EXPECT_STREQ(rv.getAsString().c_str(), "return val");
 }
+
+TEST(StmtSuite, UndefineStmt){
+  murphi::Designator *des = new murphi::Designator("fwd_network");
+
+  murphi::UndefineStmt undef(des);
+
+  EXPECT_STREQ(undef.getAsString().c_str(), "UNDEFINE( fwd_network )");
+}
