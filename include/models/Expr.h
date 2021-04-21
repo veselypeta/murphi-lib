@@ -32,6 +32,7 @@
 
 */
 namespace murphi {
+class TypeExpr;
 // Abstract Class Expression
 class Expr : public Printable<Expr> {
  public:
@@ -334,6 +335,29 @@ class CondExpr : public Expr {
   Expr* condExpr;
   Expr* thenExpr;
   Expr* elseExpr;
+};
+
+// <expr> : | ISUNDEFINED '(' designator ')';
+class IsUndefExpr : public Expr {
+ public:
+  IsUndefExpr(Designator* des) : des{des} {}
+  ~IsUndefExpr() { delete des; }
+  virtual std::string getAsString();
+
+ private:
+  Designator* des;
+};
+
+// <expr> : | ISMEMBER '(' designator ',' typeExpr ')' ;
+class IsMemberExpr : public Expr {
+ public:
+  IsMemberExpr(Designator* des, TypeExpr* tyexpr) : des{des}, tyexpr{tyexpr} {}
+  ~IsMemberExpr();
+  virtual std::string getAsString();
+
+ private:
+  Designator* des;
+  TypeExpr* tyexpr;
 };
 
 }  // namespace murphi

@@ -240,4 +240,16 @@ class ReturnStmt : public Stmt {
   Expr* expr;
 };
 
+/* undefinestmt	: UNDEFINE designator; */
+class UndefineStmt : public Stmt {
+ public:
+  UndefineStmt(Designator* des) : des{des} {}
+  ~UndefineStmt() { delete des; }
+
+  virtual std::string getAsString();
+
+ private:
+  Designator* des;
+};
+
 }  // namespace murphi

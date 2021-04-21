@@ -31,4 +31,18 @@ std::string Record::getAsString() {
 void Record::addVarDecl(VarDecl* vd) {
   body.push_back(vd);
 }
+
+std::string ScalarSet::getAsString() {
+  return "SCALARSET( " + expr->getAsString() + " )";
+}
+
+std::string Union::getAsString() {
+  return "UNION{" + utils::interleaveComma(elems) + "}";
+}
+
+// multisettype	: MULTISET "[" expr "]" OF typeExpr
+std::string MultiSet::getAsString() {
+  return "MULTISET [" + expr->getAsString() + "] OF " + tyExpr->getAsString();
+}
+
 }  // namespace murphi

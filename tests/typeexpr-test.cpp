@@ -1,5 +1,6 @@
 #include "models/TypeExpr.h"
 #include <gtest/gtest.h>
+#include "models/Expr.h"
 #include "models/TypeDecl.h"
 #include "models/VarDecl.h"
 
@@ -55,4 +56,33 @@ TEST(TypeDeclSuite, PrintsIdTypeExpression) {
   EXPECT_STREQ(tDecl->getAsString().c_str(), expected.c_str());
 
   delete tDecl;
+}
+
+// SCALARSET TEST
+TEST(TypeExprSuite, ScalarSetPrint) {
+  murphi::Designator* des = new murphi::Designator("caches");
+
+  murphi::ScalarSet ss(des);
+
+  EXPECT_STREQ(ss.getAsString().c_str(), "SCALARSET( caches )");
+}
+
+// UNION TEST
+TEST(TypeExprSuite, UnionPrintTest) {
+  murphi::Union un("first", "second");
+
+  EXPECT_STREQ(un.getAsString().c_str(), "UNION{first,second}");
+
+  un.addElem("third");
+  EXPECT_STREQ(un.getAsString().c_str(), "UNION{first,second,third}");
+  un.addElem("fourth");
+  EXPECT_STREQ(un.getAsString().c_str(), "UNION{first,second,third,fourth}");
+}
+
+// MULTISET TEST
+TEST(TypeExprSuite, MultiSetTestPrint) {
+  murphi::Designator* des = new murphi::Designator("NrCaches");
+  murphi::ID* caches = new murphi::ID("OBJSET_cache");
+  murphi::MultiSet ms(des, caches);
+  EXPECT_STREQ(ms.getAsString().c_str(), "MULTISET [NrCaches] OF OBJSET_cache");
 }

@@ -144,4 +144,9 @@ std::string ReturnStmt::getAsString() {
   return s;
 }
 
+// -- Undefine Stmt -- //
+std::string UndefineStmt::getAsString() {
+  return "UNDEFINE( " + des->getAsString() + " )";
+}
+
 }  // namespace murphi
