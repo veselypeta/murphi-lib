@@ -79,3 +79,11 @@ TEST(TypeExprSuite, UnionPrintTest) {
   un.addElem("fourth");
   EXPECT_STREQ(un.getAsString().c_str(), "UNION{first,second,third,fourth}");
 }
+
+// MULTISET TEST
+TEST(TypeExprSuite, MultiSetTestPrint){
+  murphi::Designator *des = new murphi::Designator("NrCaches");
+  murphi::ID *caches = new murphi::ID("OBJSET_cache");
+  murphi::MultiSet ms(des, caches);
+  EXPECT_STREQ(ms.getAsString().c_str(), "MULTISET [NrCaches] OF OBJSET_cache");
+}

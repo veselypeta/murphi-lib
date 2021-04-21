@@ -105,4 +105,19 @@ private:
   std::vector<std::string> elems;
 };
 
+// multisettype	: MULTISET "[" expr "]" OF typeExpr
+class MultiSet : public TypeExpr {
+public:
+  MultiSet(Expr *expr, TypeExpr *tyExpr) : expr{expr}, tyExpr{tyExpr} {}
+  ~MultiSet(){
+    delete expr;
+    delete tyExpr;
+  };
+  virtual std::string getAsString();
+
+private:
+  Expr *expr;
+  TypeExpr *tyExpr;
+};
+
 } // namespace murphi

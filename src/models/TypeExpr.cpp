@@ -40,4 +40,9 @@ std::string Union::getAsString(){
   return "UNION{" + utils::interleaveComma(elems) + "}";
 }
 
+// multisettype	: MULTISET "[" expr "]" OF typeExpr
+std::string MultiSet::getAsString(){
+  return "MULTISET [" + expr->getAsString() + "] OF " + tyExpr->getAsString();
+}
+
 }  // namespace murphi
