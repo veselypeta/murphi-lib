@@ -32,16 +32,16 @@ void Record::addVarDecl(VarDecl* vd) {
   body.push_back(vd);
 }
 
-std::string ScalarSet::getAsString(){
+std::string ScalarSet::getAsString() {
   return "SCALARSET( " + expr->getAsString() + " )";
 }
 
-std::string Union::getAsString(){
+std::string Union::getAsString() {
   return "UNION{" + utils::interleaveComma(elems) + "}";
 }
 
 // multisettype	: MULTISET "[" expr "]" OF typeExpr
-std::string MultiSet::getAsString(){
+std::string MultiSet::getAsString() {
   return "MULTISET [" + expr->getAsString() + "] OF " + tyExpr->getAsString();
 }
 

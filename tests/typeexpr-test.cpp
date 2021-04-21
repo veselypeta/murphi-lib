@@ -1,21 +1,21 @@
-#include "models/TypeDecl.h"
 #include "models/TypeExpr.h"
-#include "models/VarDecl.h"
-#include "models/Expr.h"
 #include <gtest/gtest.h>
+#include "models/Expr.h"
+#include "models/TypeDecl.h"
+#include "models/VarDecl.h"
 
 // Type Expr Suite
 TEST(TypeExprSuite, PrintIDTypeExpr) {
-  murphi::TypeExpr *a = new murphi::ID("test");
+  murphi::TypeExpr* a = new murphi::ID("test");
   EXPECT_STREQ(a->getAsString().c_str(), "test");
   delete a;
 }
 
 TEST(TypeExprSuite, IntegerSubrangePrint) {
-  murphi::Expr *a = new murphi::IntExpr(0);
-  murphi::Expr *b = new murphi::IntExpr(5);
+  murphi::Expr* a = new murphi::IntExpr(0);
+  murphi::Expr* b = new murphi::IntExpr(5);
 
-  murphi::TypeExpr *c = new murphi::IntegerSubRange(a, b);
+  murphi::TypeExpr* c = new murphi::IntegerSubRange(a, b);
 
   EXPECT_STREQ(c->getAsString().c_str(), "0 .. 5");
 
@@ -23,7 +23,7 @@ TEST(TypeExprSuite, IntegerSubrangePrint) {
 }
 
 TEST(TypeExprSuite, EnumPrint) {
-  murphi::Enum *e = new murphi::Enum();
+  murphi::Enum* e = new murphi::Enum();
   e->addEnum("val1");
   e->addEnum("val2");
   e->addEnum("random");
@@ -34,9 +34,9 @@ TEST(TypeExprSuite, EnumPrint) {
 }
 
 TEST(TypeExprSuite, RecordPrint) {
-  murphi::Record *r = new murphi::Record();
-  murphi::TypeExpr *at = new murphi::ID("test");
-  murphi::VarDecl *a = new murphi::VarDecl("init", at);
+  murphi::Record* r = new murphi::Record();
+  murphi::TypeExpr* at = new murphi::ID("test");
+  murphi::VarDecl* a = new murphi::VarDecl("init", at);
   r->addVarDecl(a);
 
   EXPECT_STREQ(r->getAsString().c_str(), "record init : test;");
@@ -48,8 +48,8 @@ TEST(TypeExprSuite, RecordPrint) {
 TEST(TypeDeclSuite, PrintsIdTypeExpression) {
   // No verification on if 'NrCaches' acutally exists
   std::string tId = "myType";
-  murphi::TypeExpr *idTyExpr = new murphi::ID("NrCaches");
-  murphi::TypeDecl *tDecl = new murphi::TypeDecl(tId, idTyExpr);
+  murphi::TypeExpr* idTyExpr = new murphi::ID("NrCaches");
+  murphi::TypeDecl* tDecl = new murphi::TypeDecl(tId, idTyExpr);
 
   std::string expected = "myType : NrCaches";
 
@@ -60,7 +60,7 @@ TEST(TypeDeclSuite, PrintsIdTypeExpression) {
 
 // SCALARSET TEST
 TEST(TypeExprSuite, ScalarSetPrint) {
-  murphi::Designator *des = new murphi::Designator("caches");
+  murphi::Designator* des = new murphi::Designator("caches");
 
   murphi::ScalarSet ss(des);
 
@@ -69,7 +69,6 @@ TEST(TypeExprSuite, ScalarSetPrint) {
 
 // UNION TEST
 TEST(TypeExprSuite, UnionPrintTest) {
-
   murphi::Union un("first", "second");
 
   EXPECT_STREQ(un.getAsString().c_str(), "UNION{first,second}");
@@ -81,9 +80,9 @@ TEST(TypeExprSuite, UnionPrintTest) {
 }
 
 // MULTISET TEST
-TEST(TypeExprSuite, MultiSetTestPrint){
-  murphi::Designator *des = new murphi::Designator("NrCaches");
-  murphi::ID *caches = new murphi::ID("OBJSET_cache");
+TEST(TypeExprSuite, MultiSetTestPrint) {
+  murphi::Designator* des = new murphi::Designator("NrCaches");
+  murphi::ID* caches = new murphi::ID("OBJSET_cache");
   murphi::MultiSet ms(des, caches);
   EXPECT_STREQ(ms.getAsString().c_str(), "MULTISET [NrCaches] OF OBJSET_cache");
 }

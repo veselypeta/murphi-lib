@@ -145,7 +145,7 @@ std::string ReturnStmt::getAsString() {
 }
 
 // -- Undefine Stmt -- //
-std::string UndefineStmt::getAsString(){
+std::string UndefineStmt::getAsString() {
   return "UNDEFINE( " + des->getAsString() + " )";
 }
 

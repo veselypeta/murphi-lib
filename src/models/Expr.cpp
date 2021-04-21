@@ -1,6 +1,6 @@
 #include "models/Expr.h"
-#include "models/TypeExpr.h"
 #include <string>
+#include "models/TypeExpr.h"
 
 namespace murphi {
 
@@ -92,18 +92,18 @@ void Designator::addIndex(Expr* arrayIndx) {
   indexes.push_back(Container(arrayIndx));
 }
 
-// Undef 
-std::string IsUndefExpr::getAsString(){
+// Undef
+std::string IsUndefExpr::getAsString() {
   return "ISUNDEFINED( " + des->getAsString() + " )";
 }
 
 // is member
 
-std::string IsMemberExpr::getAsString(){
+std::string IsMemberExpr::getAsString() {
   return "ISMEMBER( " + des->getAsString() + "," + tyexpr->getAsString() + " )";
 }
 
-IsMemberExpr::~IsMemberExpr(){
+IsMemberExpr::~IsMemberExpr() {
   delete des;
   delete tyexpr;
 }
