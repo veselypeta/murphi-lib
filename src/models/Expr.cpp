@@ -1,6 +1,7 @@
 #include "models/Expr.h"
 #include <string>
 #include "models/TypeExpr.h"
+#include "models/Quantifier.h"
 
 namespace murphi {
 
@@ -107,4 +108,10 @@ IsMemberExpr::~IsMemberExpr() {
   delete des;
   delete tyexpr;
 }
+
+// multiset count
+std::string MultiSetCountExpr::getAsString(){
+  return "MultisetCount(" + var + " : " + expr->getAsString() +", true)";
+}
+
 }  // namespace murphi

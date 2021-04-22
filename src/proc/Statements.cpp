@@ -1,5 +1,6 @@
 #include "proc/Statements.h"
 #include "utils/PrintUtils.h"
+#include "models/Quantifier.h"
 
 namespace murphi {
 
