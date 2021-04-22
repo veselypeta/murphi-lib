@@ -123,4 +123,16 @@ class AliasRule : public Rule {
   Rules rules;
 };
 
+class ChooseRule : public Rule {
+ public:
+  ChooseRule(Quantifier* qf) : qf{qf} {}
+  ~ChooseRule() { delete qf; }
+  void addRule(Rule* rule) { rules.addRule(rule); }
+  virtual std::string getAsString();
+
+ private:
+  Quantifier* qf;
+  Rules rules;
+};
+
 }  // namespace murphi

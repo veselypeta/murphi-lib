@@ -360,4 +360,15 @@ class IsMemberExpr : public Expr {
   TypeExpr* tyexpr;
 };
 
+class MultiSetCountExpr : public Expr {
+ public:
+  MultiSetCountExpr(std::string var, Expr* expr) : var{var}, expr{expr} {}
+  ~MultiSetCountExpr() { delete expr; }
+  virtual std::string getAsString();
+
+ private:
+  std::string var;
+  Expr* expr;
+};
+
 }  // namespace murphi
