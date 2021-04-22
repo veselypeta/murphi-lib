@@ -54,4 +54,9 @@ std::string AliasRule::getAsString() {
   return "alias " + utils::interleave(al, "; ") + " do " + rules.getAsString() +
          " end";
 }
+
+std::string ChooseRule::getAsString(){
+  return "Choose " + qf->getAsString() + " Do " + rules.getAsString() + " EndChoose";
+}
+
 }  // namespace murphi

@@ -252,4 +252,19 @@ class UndefineStmt : public Stmt {
   Designator* des;
 };
 
+class MultiSetAddStmt : public Stmt{
+public:
+MultiSetAddStmt(murphi::Designator *msg, murphi::Designator *net): msg{msg}, net{net} {}
+~MultiSetAddStmt(){
+  delete msg;
+  delete net;
+}
+
+virtual std::string getAsString();
+private:
+Designator *msg;
+Designator *net;
+
+};
+
 }  // namespace murphi

@@ -149,4 +149,9 @@ std::string UndefineStmt::getAsString() {
   return "UNDEFINE( " + des->getAsString() + " )";
 }
 
+std::string MultiSetAddStmt::getAsString(){
+  return "MultisetAdd(" + msg->getAsString() + "," + net->getAsString() + ")";
+}
+
+
 }  // namespace murphi
