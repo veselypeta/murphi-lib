@@ -267,4 +267,19 @@ Designator *net;
 
 };
 
+class MultiSetRemoveStmt : public Stmt{
+public:
+MultiSetRemoveStmt(murphi::Designator *msg, murphi::Designator *net): msg{msg}, net{net} {}
+~MultiSetRemoveStmt(){
+  delete msg;
+  delete net;
+}
+
+virtual std::string getAsString();
+private:
+Designator *msg;
+Designator *net;
+
+};
+
 }  // namespace murphi

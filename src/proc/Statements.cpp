@@ -153,5 +153,9 @@ std::string MultiSetAddStmt::getAsString(){
   return "MultisetAdd(" + msg->getAsString() + "," + net->getAsString() + ")";
 }
 
+std::string MultiSetRemoveStmt::getAsString(){
+  return "MultisetRemove(" + msg->getAsString() + "," + net->getAsString() + ")";
+}
+
 
 }  // namespace murphi

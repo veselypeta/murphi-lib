@@ -219,3 +219,11 @@ TEST(StmtSuite, MutiSetAddStmt) {
   murphi::MultiSetAddStmt msa(msg, net);
   EXPECT_STREQ(msa.getAsString().c_str(), "MultisetAdd(msg,fwd)");
 }
+
+TEST(StmtSuite, MultiSetRemoveStmt) {
+  murphi::Designator *msg = new murphi::Designator("msg");
+  murphi::Designator *net = new murphi::Designator("fwd");
+
+  murphi::MultiSetRemoveStmt msrm(msg, net);
+  EXPECT_STREQ(msrm.getAsString().c_str(), "MultisetRemove(msg,fwd)");
+}
