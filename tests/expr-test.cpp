@@ -255,11 +255,9 @@ TEST(IsMemberSuite, IsMemberPrint) {
                "ISMEMBER( directory,Directory_ENTRY )");
 }
 
-
 // MultiSetCount
-TEST(MultiSetSuite, MultiSetPrintSuite){
-  murphi::Designator *des = new murphi::Designator("net");
+TEST(MultiSetSuite, MultiSetPrintSuite) {
+  murphi::Designator* des = new murphi::Designator("net");
   murphi::MultiSetCountExpr countexpr("i", des);
   EXPECT_STREQ(countexpr.getAsString().c_str(), "MultisetCount(i : net, true)");
-
 }

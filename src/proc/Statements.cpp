@@ -1,6 +1,6 @@
 #include "proc/Statements.h"
-#include "utils/PrintUtils.h"
 #include "models/Quantifier.h"
+#include "utils/PrintUtils.h"
 
 namespace murphi {
 
@@ -150,13 +150,13 @@ std::string UndefineStmt::getAsString() {
   return "UNDEFINE( " + des->getAsString() + " )";
 }
 
-std::string MultiSetAddStmt::getAsString(){
+std::string MultiSetAddStmt::getAsString() {
   return "MultisetAdd(" + msg->getAsString() + "," + net->getAsString() + ")";
 }
 
-std::string MultiSetRemoveStmt::getAsString(){
-  return "MultisetRemove(" + msg->getAsString() + "," + net->getAsString() + ")";
+std::string MultiSetRemoveStmt::getAsString() {
+  return "MultisetRemove(" + msg->getAsString() + "," + net->getAsString() +
+         ")";
 }
-
 
 }  // namespace murphi

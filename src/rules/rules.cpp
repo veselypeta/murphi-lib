@@ -55,8 +55,9 @@ std::string AliasRule::getAsString() {
          " end";
 }
 
-std::string ChooseRule::getAsString(){
-  return "Choose " + qf->getAsString() + " Do " + rules.getAsString() + " EndChoose";
+std::string ChooseRule::getAsString() {
+  return "Choose " + qf->getAsString() + " Do " + rules.getAsString() +
+         " EndChoose";
 }
 
 }  // namespace murphi

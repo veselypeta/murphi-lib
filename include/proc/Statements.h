@@ -252,34 +252,36 @@ class UndefineStmt : public Stmt {
   Designator* des;
 };
 
-class MultiSetAddStmt : public Stmt{
-public:
-MultiSetAddStmt(murphi::Designator *msg, murphi::Designator *net): msg{msg}, net{net} {}
-~MultiSetAddStmt(){
-  delete msg;
-  delete net;
-}
+class MultiSetAddStmt : public Stmt {
+ public:
+  MultiSetAddStmt(murphi::Designator* msg, murphi::Designator* net)
+      : msg{msg}, net{net} {}
+  ~MultiSetAddStmt() {
+    delete msg;
+    delete net;
+  }
 
-virtual std::string getAsString();
-private:
-Designator *msg;
-Designator *net;
+  virtual std::string getAsString();
 
+ private:
+  Designator* msg;
+  Designator* net;
 };
 
-class MultiSetRemoveStmt : public Stmt{
-public:
-MultiSetRemoveStmt(murphi::Designator *msg, murphi::Designator *net): msg{msg}, net{net} {}
-~MultiSetRemoveStmt(){
-  delete msg;
-  delete net;
-}
+class MultiSetRemoveStmt : public Stmt {
+ public:
+  MultiSetRemoveStmt(murphi::Designator* msg, murphi::Designator* net)
+      : msg{msg}, net{net} {}
+  ~MultiSetRemoveStmt() {
+    delete msg;
+    delete net;
+  }
 
-virtual std::string getAsString();
-private:
-Designator *msg;
-Designator *net;
+  virtual std::string getAsString();
 
+ private:
+  Designator* msg;
+  Designator* net;
 };
 
 }  // namespace murphi

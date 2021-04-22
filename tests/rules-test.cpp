@@ -150,35 +150,37 @@ TEST(RuleSuite, AliasRulePrint) {
                "= cache_I ==>  begin SEND_cache_I_load(adr,m); end; end");
 }
 
-TEST(RulesSuite, ChooseRulePrint){
-  murphi::ID *net = new murphi::ID("net");
-  murphi::Quantifier *qf = new murphi::Quantifier("i",net);
-
+TEST(RulesSuite, ChooseRulePrint) {
+  murphi::ID* net = new murphi::ID("net");
+  murphi::Quantifier* qf = new murphi::Quantifier("i", net);
 
   // net[i].Sender = net[i].Receiver
-  murphi::Designator *sender = new murphi::Designator("net");
-  murphi::Designator *sendIndex = new murphi::Designator("i");
+  murphi::Designator* sender = new murphi::Designator("net");
+  murphi::Designator* sendIndex = new murphi::Designator("i");
   sender->addIndex(sendIndex);
   sender->addIndex("Sender");
 
-  murphi::Designator *receiver = new murphi::Designator("net");
-  murphi::Designator *recvIndex = new murphi::Designator("i");
+  murphi::Designator* receiver = new murphi::Designator("net");
+  murphi::Designator* recvIndex = new murphi::Designator("i");
   receiver->addIndex(recvIndex);
   receiver->addIndex("Receiver");
 
   // eq expr
-  murphi::EQExpr *eqExpr = new murphi::EQExpr(sender, receiver);
-  murphi::SimpleRule *simpRule = new murphi::SimpleRule("test_rule", eqExpr);
-  
-  murphi::Designator *cache = new murphi::Designator("cache");
+  murphi::EQExpr* eqExpr = new murphi::EQExpr(sender, receiver);
+  murphi::SimpleRule* simpRule = new murphi::SimpleRule("test_rule", eqExpr);
+
+  murphi::Designator* cache = new murphi::Designator("cache");
   cache->addIndex("State");
-  murphi::Designator *state = new murphi::Designator("cache_I");
-  murphi::Assignment *ass = new murphi::Assignment(cache, state);
-  
+  murphi::Designator* state = new murphi::Designator("cache_I");
+  murphi::Assignment* ass = new murphi::Assignment(cache, state);
+
   simpRule->statements.addStatement(ass);
 
   murphi::ChooseRule cr(qf);
   cr.addRule(simpRule);
 
-  EXPECT_STREQ(cr.getAsString().c_str(), "Choose i : net Do rule \"test_rule\" net[i].Sender = net[i].Receiver ==>  begin cache.State := cache_I; end; EndChoose");
+  EXPECT_STREQ(
+      cr.getAsString().c_str(),
+      "Choose i : net Do rule \"test_rule\" net[i].Sender = net[i].Receiver "
+      "==>  begin cache.State := cache_I; end; EndChoose");
 }
