@@ -20,6 +20,13 @@ void Enum::addEnum(std::string enumValue) {
   es.push_back(enumValue);
 }
 
+Record::Record(const Record& rhs) {
+  for (std::vector<VarDecl*>::const_iterator it = rhs.body.begin();
+       it != rhs.body.end(); ++it) {
+    body.push_back((*it)->clone());
+  }
+}
+
 std::string Record::getAsString() {
   std::string s = "record";
   for (auto vd : body) {

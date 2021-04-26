@@ -8,9 +8,14 @@ namespace murphi {
 class ConstDecl : public IDecl {
  public:
   ConstDecl(std::string id, Expr* expr) : id{id}, expression{expr} {}
+  ConstDecl(const ConstDecl& rhs) {
+    id = rhs.id;
+    expression = rhs.expression->clone();
+  }
   ~ConstDecl() { delete expression; }
-  std::string getAsString();
-  std::string getId();
+  virtual ConstDecl* clone() const { return new ConstDecl(*this); }
+  virtual std::string getAsString();
+  virtual std::string getId();
 
  private:
   std::string id;

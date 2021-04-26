@@ -20,6 +20,7 @@ class VarDecl;
 class TypeExpr : public Printable<TypeExpr> {
  public:
   virtual std::string getAsString() = 0;
+  virtual TypeExpr* clone() const = 0;
   virtual ~TypeExpr() {}
 };
 
@@ -27,6 +28,9 @@ class TypeExpr : public Printable<TypeExpr> {
 class ID : public TypeExpr {
  public:
   ID(std::string typeId) : typeId{typeId} {}
+  ID(const ID& rhs) = default;
+  ~ID() = default;
+  virtual ID* clone() const { return new ID(*this); }
   virtual std::string getAsString();
 
  private:
@@ -37,10 +41,15 @@ class ID : public TypeExpr {
 class IntegerSubRange : public TypeExpr {
  public:
   IntegerSubRange(Expr* lhs, Expr* rhs) : lhs{lhs}, rhs{rhs} {}
+  IntegerSubRange(const IntegerSubRange& in) {
+    lhs = in.lhs->clone();
+    rhs = in.rhs->clone();
+  }
   ~IntegerSubRange() {
     delete lhs;
     delete rhs;
   }
+  virtual IntegerSubRange* clone() const { return new IntegerSubRange(*this); }
   virtual std::string getAsString();
 
  private:
@@ -53,8 +62,9 @@ class Enum : public TypeExpr {
  public:
   Enum() {}
   Enum(std::vector<std::string> es) : es{es} {}
-  ~Enum() { es.clear(); }
-
+  Enum(const Enum& rhs) = default;
+  ~Enum() = default;
+  virtual Enum* clone() const { return new Enum(*this); }
   virtual std::string getAsString();
   void addEnum(std::string e);
 
@@ -66,8 +76,9 @@ class Enum : public TypeExpr {
 class Record : public TypeExpr {
  public:
   Record() {}
+  Record(const Record& rhs);
   ~Record() { body.clear(); }
-
+  virtual Record* clone() const { return new Record(*this); }
   virtual std::string getAsString();
   void addVarDecl(VarDecl* vd);
 
@@ -79,8 +90,9 @@ class Record : public TypeExpr {
 class ScalarSet : public TypeExpr {
  public:
   ScalarSet(Expr* expr) : expr{expr} {}
+  ScalarSet(const ScalarSet& rhs) { expr = rhs.expr->clone(); }
   ~ScalarSet() { delete expr; }
-
+  virtual ScalarSet* clone() const { return new ScalarSet(*this); }
   virtual std::string getAsString();
 
  private:
@@ -95,10 +107,13 @@ class Union : public TypeExpr {
     elems.push_back(elem);
     elems.push_back(elem2);
   }
+  Union(const Union& rhs) = default;
+  ~Union() = default;
+
+  virtual Union* clone() const { return new Union(*this); }
+  virtual std::string getAsString();
 
   void addElem(std::string elem) { return elems.push_back(elem); }
-
-  virtual std::string getAsString();
 
  private:
   std::vector<std::string> elems;
@@ -108,10 +123,15 @@ class Union : public TypeExpr {
 class MultiSet : public TypeExpr {
  public:
   MultiSet(Expr* expr, TypeExpr* tyExpr) : expr{expr}, tyExpr{tyExpr} {}
+  MultiSet(const MultiSet& rhs) {
+    expr = rhs.expr->clone();
+    tyExpr = rhs.tyExpr->clone();
+  }
   ~MultiSet() {
     delete expr;
     delete tyExpr;
   };
+  virtual MultiSet* clone() const { return new MultiSet(*this); }
   virtual std::string getAsString();
 
  private:
