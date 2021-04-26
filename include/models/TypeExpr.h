@@ -1,9 +1,9 @@
 #pragma once
-#include "interfaces/Printable.h"
-#include "models/Expr.h"
 #include <cstdarg>
 #include <string>
 #include <vector>
+#include "interfaces/Printable.h"
+#include "models/Expr.h"
 
 namespace murphi {
 class VarDecl;
@@ -18,30 +18,30 @@ class VarDecl;
 */
 
 class TypeExpr : public Printable<TypeExpr> {
-public:
+ public:
   virtual std::string getAsString() = 0;
-  virtual TypeExpr *clone() const = 0;
+  virtual TypeExpr* clone() const = 0;
   virtual ~TypeExpr() {}
 };
 
 // <ID>		-- a previously defined type.
 class ID : public TypeExpr {
-public:
+ public:
   ID(std::string typeId) : typeId{typeId} {}
-  ID(const ID &rhs) = default;
+  ID(const ID& rhs) = default;
   ~ID() = default;
-  virtual ID *clone() const { return new ID(*this); }
+  virtual ID* clone() const { return new ID(*this); }
   virtual std::string getAsString();
 
-private:
+ private:
   std::string typeId;
 };
 
 // <expr> .. <expr>	-- Integer subrange.
 class IntegerSubRange : public TypeExpr {
-public:
-  IntegerSubRange(Expr *lhs, Expr *rhs) : lhs{lhs}, rhs{rhs} {}
-  IntegerSubRange(const IntegerSubRange &in) {
+ public:
+  IntegerSubRange(Expr* lhs, Expr* rhs) : lhs{lhs}, rhs{rhs} {}
+  IntegerSubRange(const IntegerSubRange& in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
@@ -49,81 +49,81 @@ public:
     delete lhs;
     delete rhs;
   }
-  virtual IntegerSubRange *clone() const { return new IntegerSubRange(*this); }
+  virtual IntegerSubRange* clone() const { return new IntegerSubRange(*this); }
   virtual std::string getAsString();
 
-private:
-  Expr *lhs;
-  Expr *rhs;
+ private:
+  Expr* lhs;
+  Expr* rhs;
 };
 
 // <typeExpr> ::=	enum \{ <ID> {, <ID> } \} -- enumeration.
 class Enum : public TypeExpr {
-public:
+ public:
   Enum() {}
   Enum(std::vector<std::string> es) : es{es} {}
-  Enum(const Enum &rhs) = default;
+  Enum(const Enum& rhs) = default;
   ~Enum() = default;
-  virtual Enum *clone() const { return new Enum(*this); }
+  virtual Enum* clone() const { return new Enum(*this); }
   virtual std::string getAsString();
   void addEnum(std::string e);
 
-private:
+ private:
   std::vector<std::string> es;
 };
 
 // <typeExpr> ::=	record { <vardecl> } end
 class Record : public TypeExpr {
-public:
+ public:
   Record() {}
-  Record(const Record &rhs);
+  Record(const Record& rhs);
   ~Record() { body.clear(); }
-  virtual Record *clone() const { return new Record(*this); }
+  virtual Record* clone() const { return new Record(*this); }
   virtual std::string getAsString();
-  void addVarDecl(VarDecl *vd);
+  void addVarDecl(VarDecl* vd);
 
-private:
-  std::vector<VarDecl *> body;
+ private:
+  std::vector<VarDecl*> body;
 };
 
 // scalarsettype   : SCALARSET "(" expr ")"
 class ScalarSet : public TypeExpr {
-public:
-  ScalarSet(Expr *expr) : expr{expr} {}
-  ScalarSet(const ScalarSet &rhs) { expr = rhs.expr->clone(); }
+ public:
+  ScalarSet(Expr* expr) : expr{expr} {}
+  ScalarSet(const ScalarSet& rhs) { expr = rhs.expr->clone(); }
   ~ScalarSet() { delete expr; }
-  virtual ScalarSet *clone() const { return new ScalarSet(*this); }
+  virtual ScalarSet* clone() const { return new ScalarSet(*this); }
   virtual std::string getAsString();
 
-private:
-  Expr *expr;
+ private:
+  Expr* expr;
 };
 
 // <typeExpr> ::= uniontype	/ scalarset /
 class Union : public TypeExpr {
-public:
+ public:
   // TODO - make this a prameter list
   Union(std::string elem, std::string elem2) {
     elems.push_back(elem);
     elems.push_back(elem2);
   }
-  Union(const Union &rhs) = default;
+  Union(const Union& rhs) = default;
   ~Union() = default;
 
-  virtual Union *clone() const { return new Union(*this); }
+  virtual Union* clone() const { return new Union(*this); }
   virtual std::string getAsString();
 
   void addElem(std::string elem) { return elems.push_back(elem); }
 
-private:
+ private:
   std::vector<std::string> elems;
 };
 
 // multisettype	: MULTISET "[" expr "]" OF typeExpr
 class MultiSet : public TypeExpr {
-public:
-  MultiSet(Expr *expr, TypeExpr *tyExpr) : expr{expr}, tyExpr{tyExpr} {}
-  MultiSet(const MultiSet &rhs) {
+ public:
+  MultiSet(Expr* expr, TypeExpr* tyExpr) : expr{expr}, tyExpr{tyExpr} {}
+  MultiSet(const MultiSet& rhs) {
     expr = rhs.expr->clone();
     tyExpr = rhs.tyExpr->clone();
   }
@@ -131,12 +131,12 @@ public:
     delete expr;
     delete tyExpr;
   };
-  virtual MultiSet *clone() const { return new MultiSet(*this); }
+  virtual MultiSet* clone() const { return new MultiSet(*this); }
   virtual std::string getAsString();
 
-private:
-  Expr *expr;
-  TypeExpr *tyExpr;
+ private:
+  Expr* expr;
+  TypeExpr* tyExpr;
 };
 
-} // namespace murphi
+}  // namespace murphi
