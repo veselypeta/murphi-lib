@@ -14,10 +14,10 @@ namespace murphi {
 */
 class IDecl : public Printable<IDecl>, Identifyable<IDecl> {
  public:
-  IDecl() {}
   virtual ~IDecl() {}
   virtual std::string getAsString() = 0;
   virtual std::string getId() = 0;
+  virtual IDecl *clone() const = 0;
 };
 
 class Decls : Printable<Decls> {
