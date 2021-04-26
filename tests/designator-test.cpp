@@ -18,8 +18,6 @@ TEST(DesignatorSuite, IndexPrint) {
   EXPECT_STREQ(d->getAsString().c_str(), "cache[8][val]");
 
   delete d;
-  delete intExpr;
-  delete dn;
 }
 
 TEST(DesignatorSuite, MixPrint) {

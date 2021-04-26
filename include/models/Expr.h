@@ -74,11 +74,17 @@ private:
         : fieldId{fieldId}, expr{nullptr}, type{ID} {}
     Container(Expr *expr) : fieldId{""}, expr{expr}, type{EXPR} {}
     Container(const Container &rhs) {
+      if (rhs.expr != nullptr) {
+        expr = rhs.expr->clone();
+      } else {
+        expr = nullptr;
+      }
       fieldId = rhs.fieldId;
-      expr = rhs.expr->clone();
       type = rhs.type;
     };
-    ~Container() { delete expr; }
+    ~Container() { 
+      delete expr;
+    }
     std::string getAsString() {
       if (type == ID) {
         return "." + fieldId;
@@ -445,14 +451,12 @@ private:
 class IsMemberExpr : public Expr {
 public:
   IsMemberExpr(Designator *des, TypeExpr *tyexpr) : des{des}, tyexpr{tyexpr} {}
-  IsMemberExpr(const IsMemberExpr &rhs){
+  IsMemberExpr(const IsMemberExpr &rhs) {
     des = rhs.des->clone();
     // TODO - TypeExpr need to be coppied too
     // tyexpr = rhs.tyexpr->clone();
   }
-  virtual IsMemberExpr *clone() const {
-    return new IsMemberExpr(*this);
-  }
+  virtual IsMemberExpr *clone() const { return new IsMemberExpr(*this); }
   ~IsMemberExpr();
   virtual std::string getAsString();
 
@@ -464,7 +468,7 @@ private:
 class MultiSetCountExpr : public Expr {
 public:
   MultiSetCountExpr(std::string var, Expr *expr) : var{var}, expr{expr} {}
-  MultiSetCountExpr(const MultiSetCountExpr &rhs){
+  MultiSetCountExpr(const MultiSetCountExpr &rhs) {
     var = rhs.var;
     expr = rhs.expr->clone();
   }
