@@ -19,19 +19,19 @@ class VarDecl;
 
 class TypeExpr : public Printable<TypeExpr> {
  public:
-  virtual std::string getAsString() = 0;
-  virtual TypeExpr* clone() const = 0;
-  virtual ~TypeExpr() {}
+  std::string getAsString() override = 0;
+  [[nodiscard]] virtual TypeExpr* clone() const = 0;
+  virtual ~TypeExpr() = default;
 };
 
 // <ID>		-- a previously defined type.
 class ID : public TypeExpr {
  public:
-  ID(std::string typeId) : typeId{typeId} {}
+  explicit ID(std::string typeId) : typeId{std::move(typeId)} {}
   ID(const ID& rhs) = default;
-  ~ID() = default;
-  virtual ID* clone() const { return new ID(*this); }
-  virtual std::string getAsString();
+  ~ID() override = default;
+  [[nodiscard]] ID* clone() const override { return new ID(*this); }
+  std::string getAsString() override;
 
  private:
   std::string typeId;
@@ -45,12 +45,12 @@ class IntegerSubRange : public TypeExpr {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  ~IntegerSubRange() {
+  ~IntegerSubRange() override {
     delete lhs;
     delete rhs;
   }
-  virtual IntegerSubRange* clone() const { return new IntegerSubRange(*this); }
-  virtual std::string getAsString();
+  [[nodiscard]] IntegerSubRange* clone() const override { return new IntegerSubRange(*this); }
+  std::string getAsString() override;
 
  private:
   Expr* lhs;
@@ -60,12 +60,12 @@ class IntegerSubRange : public TypeExpr {
 // <typeExpr> ::=	enum \{ <ID> {, <ID> } \} -- enumeration.
 class Enum : public TypeExpr {
  public:
-  Enum() {}
-  Enum(std::vector<std::string> es) : es{es} {}
+  Enum() = default;
+  explicit Enum(std::vector<std::string> es) : es{std::move(es)} {}
   Enum(const Enum& rhs) = default;
-  ~Enum() = default;
-  virtual Enum* clone() const { return new Enum(*this); }
-  virtual std::string getAsString();
+  ~Enum() override = default;
+  [[nodiscard]] Enum* clone() const override { return new Enum(*this); }
+  std::string getAsString() override;
   void addEnum(std::string e);
 
  private:
@@ -75,11 +75,11 @@ class Enum : public TypeExpr {
 // <typeExpr> ::=	record { <vardecl> } end
 class Record : public TypeExpr {
  public:
-  Record() {}
+  Record() = default;
   Record(const Record& rhs);
-  ~Record() { body.clear(); }
-  virtual Record* clone() const { return new Record(*this); }
-  virtual std::string getAsString();
+  ~Record() override { body.clear(); }
+  [[nodiscard]] Record* clone() const override { return new Record(*this); }
+  std::string getAsString() override;
   void addVarDecl(VarDecl* vd);
 
  private:
@@ -89,11 +89,11 @@ class Record : public TypeExpr {
 // scalarsettype   : SCALARSET "(" expr ")"
 class ScalarSet : public TypeExpr {
  public:
-  ScalarSet(Expr* expr) : expr{expr} {}
+  explicit ScalarSet(Expr* expr) : expr{expr} {}
   ScalarSet(const ScalarSet& rhs) { expr = rhs.expr->clone(); }
-  ~ScalarSet() { delete expr; }
-  virtual ScalarSet* clone() const { return new ScalarSet(*this); }
-  virtual std::string getAsString();
+  ~ScalarSet() override { delete expr; }
+  [[nodiscard]] ScalarSet* clone() const override { return new ScalarSet(*this); }
+  std::string getAsString() override;
 
  private:
   Expr* expr;
@@ -104,16 +104,16 @@ class Union : public TypeExpr {
  public:
   // TODO - make this a prameter list
   Union(std::string elem, std::string elem2) {
-    elems.push_back(elem);
-    elems.push_back(elem2);
+    elems.push_back(std::move(elem));
+    elems.push_back(std::move(elem2));
   }
   Union(const Union& rhs) = default;
-  ~Union() = default;
+  ~Union() override = default;
 
-  virtual Union* clone() const { return new Union(*this); }
-  virtual std::string getAsString();
+  [[nodiscard]] Union* clone() const override { return new Union(*this); }
+  std::string getAsString() override;
 
-  void addElem(std::string elem) { return elems.push_back(elem); }
+  void addElem(std::string elem) { return elems.push_back(std::move(elem)); }
 
  private:
   std::vector<std::string> elems;
@@ -127,12 +127,12 @@ class MultiSet : public TypeExpr {
     expr = rhs.expr->clone();
     tyExpr = rhs.tyExpr->clone();
   }
-  ~MultiSet() {
+  ~MultiSet() override {
     delete expr;
     delete tyExpr;
   };
-  virtual MultiSet* clone() const { return new MultiSet(*this); }
-  virtual std::string getAsString();
+  [[nodiscard]] MultiSet* clone() const override { return new MultiSet(*this); }
+  std::string getAsString() override;
 
  private:
   Expr* expr;

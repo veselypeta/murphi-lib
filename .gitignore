@@ -33,6 +33,7 @@
 
 # Editors
 .vscode
+.idea
 
 # build directory
 build

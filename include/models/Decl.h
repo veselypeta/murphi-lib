@@ -14,17 +14,17 @@ namespace murphi {
 */
 class IDecl : public Printable<IDecl>, Identifyable<IDecl> {
  public:
-  virtual ~IDecl() {}
-  virtual std::string getAsString() = 0;
+  virtual ~IDecl() = default;
+  std::string getAsString() override = 0;
   virtual std::string getId() = 0;
-  virtual IDecl* clone() const = 0;
+  [[nodiscard]] virtual IDecl* clone() const = 0;
 };
 
 class Decls : Printable<Decls> {
  public:
-  std::string getAsString();
+  std::string getAsString() override;
   void addDecl(IDecl* decl) { decls.push_back(decl); };
-  bool isValidReference(std::string id);
+  bool isValidReference(std::string &id);
 
  private:
   std::vector<IDecl*> decls;

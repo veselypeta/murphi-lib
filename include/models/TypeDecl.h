@@ -8,15 +8,15 @@ namespace murphi {
 //<typedecl> ::=	<ID> : <typeExpr>
 class TypeDecl : public IDecl {
  public:
-  TypeDecl(std::string id, TypeExpr* expr) : id{id}, expr{expr} {}
+  TypeDecl(std::string id, TypeExpr* expr) : id{std::move(id)}, expr{expr} {}
   TypeDecl(const TypeDecl& rhs) {
     id = rhs.id;
     expr = rhs.expr->clone();
   }
-  ~TypeDecl() { delete expr; }
-  virtual TypeDecl* clone() const { return new TypeDecl(*this); }
-  virtual std::string getAsString();
-  virtual std::string getId() { return id; }
+  ~TypeDecl() override { delete expr; }
+  [[nodiscard]] TypeDecl* clone() const override { return new TypeDecl(*this); }
+  std::string getAsString() override;
+  std::string getId() override { return id; }
 
  private:
   std::string id;

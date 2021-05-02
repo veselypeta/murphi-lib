@@ -1,10 +1,10 @@
 #pragma once
-#include <string>
-#include <vector>
 #include "interfaces/Printable.h"
 #include "models/Decl.h"
 #include "models/Expr.h"
 #include "proc/Statements.h"
+#include <string>
+#include <vector>
 namespace murphi {
 /*
         <rule> ::= <simplerule>
@@ -14,22 +14,22 @@ namespace murphi {
                  | <aliasrule>
 */
 class Rule : public Printable<Rule> {
- public:
-  Rule() {}
-  virtual ~Rule() {}
-  virtual std::string getAsString() = 0;
+public:
+  Rule() = default;
+  virtual ~Rule() = default;
+  std::string getAsString() override = 0;
 };
 
 /* <rules> ::= <rule> {; <rule> } [;] */
 class Rules : Printable<Rules> {
- public:
-  Rules() {}
+public:
+  Rules() = default;
   ~Rules() { rules.clear(); }
-  void addRule(Rule* r);
-  std::string getAsString();
+  void addRule(Rule *r);
+  std::string getAsString() override;
 
- private:
-  std::vector<Rule*> rules;
+private:
+  std::vector<Rule *> rules;
 };
 
 /*
@@ -40,20 +40,20 @@ class Rules : Printable<Rules> {
                          end
 */
 class SimpleRule : public Rule {
- public:
-  SimpleRule(std::string ruleName, Expr* ruleExpr)
-      : ruleName{ruleName}, ruleExpr{ruleExpr} {}
-  ~SimpleRule() { delete ruleExpr; }
-  virtual std::string getAsString();
+public:
+  SimpleRule(std::string ruleName, Expr *ruleExpr)
+      : ruleName{std::move(ruleName)}, ruleExpr{ruleExpr} {}
+  ~SimpleRule() override { delete ruleExpr; }
+  std::string getAsString() override;
 
   // These fields are public to allow the library user to do things such as .
   // obj.statements.addStatement(s);
   Decls declarations;
   Stmts statements;
 
- private:
+private:
   std::string ruleName;
-  Expr* ruleExpr;
+  Expr *ruleExpr;
 };
 
 /*
@@ -63,15 +63,16 @@ class SimpleRule : public Rule {
                          end
 */
 class StartState : public Rule {
- public:
-  StartState() {}
-  StartState(std::string startStateName) : startStateName{startStateName} {}
-  virtual std::string getAsString();
+public:
+  StartState() = default;
+  explicit StartState(std::string startStateName)
+      : startStateName{std::move(startStateName)} {}
+  std::string getAsString() override;
 
   Decls decls;
   Stmts statements;
 
- private:
+private:
   std::string startStateName;
 };
 
@@ -79,16 +80,16 @@ class StartState : public Rule {
   <invariant> ::= invariant [ <string> ] <expr>
 */
 class Invariant : public Rule {
- public:
-  explicit Invariant(Expr* invExpr) : invExpr{invExpr} {}
-  Invariant(std::string invName, Expr* invExpr)
-      : invariantName{invName}, invExpr{invExpr} {}
-  ~Invariant() { delete invExpr; }
-  virtual std::string getAsString();
+public:
+  explicit Invariant(Expr *invExpr) : invExpr{invExpr} {}
+  Invariant(std::string invName, Expr *invExpr)
+      : invariantName{std::move(invName)}, invExpr{invExpr} {}
+  ~Invariant() override { delete invExpr; }
+  std::string getAsString() override;
 
- private:
+private:
   std::string invariantName;
-  Expr* invExpr;
+  Expr *invExpr;
 };
 
 /*
@@ -97,14 +98,14 @@ class Invariant : public Rule {
 */
 
 class RuleSet : public Rule {
- public:
-  explicit RuleSet(Quantifier* q) { quants.push_back(q); };
-  void addRule(Rule* r) { rules.addRule(r); }
-  virtual std::string getAsString();
+public:
+  explicit RuleSet(Quantifier *q) { quants.push_back(q); };
+  void addRule(Rule *r) { rules.addRule(r); }
+  std::string getAsString() override;
 
- private:
+private:
   Rules rules;
-  std::vector<Quantifier*> quants;
+  std::vector<Quantifier *> quants;
 };
 
 /*
@@ -112,27 +113,27 @@ class RuleSet : public Rule {
 */
 
 class AliasRule : public Rule {
- public:
-  explicit AliasRule(Alias* a) { aliasses.push_back(a); }
-  ~AliasRule() { aliasses.clear(); }
-  virtual std::string getAsString();
-  void addRule(Rule* r) { rules.addRule(r); }
+public:
+  explicit AliasRule(Alias *a) { aliasses.push_back(a); }
+  ~AliasRule() override { aliasses.clear(); }
+  std::string getAsString() override;
+  void addRule(Rule *r) { rules.addRule(r); }
 
- private:
-  std::vector<Alias*> aliasses;
+private:
+  std::vector<Alias *> aliasses;
   Rules rules;
 };
 
 class ChooseRule : public Rule {
- public:
-  ChooseRule(Quantifier* qf) : qf{qf} {}
-  ~ChooseRule() { delete qf; }
-  void addRule(Rule* rule) { rules.addRule(rule); }
-  virtual std::string getAsString();
+public:
+  explicit ChooseRule(Quantifier *qf) : qf{qf} {}
+  ~ChooseRule() override { delete qf; }
+  void addRule(Rule *rule) { rules.addRule(rule); }
+  std::string getAsString() override;
 
- private:
-  Quantifier* qf;
+private:
+  Quantifier *qf;
   Rules rules;
 };
 
-}  // namespace murphi
+} // namespace murphi

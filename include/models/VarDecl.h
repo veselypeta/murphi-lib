@@ -6,15 +6,15 @@
 namespace murphi {
 class VarDecl : public IDecl {
  public:
-  VarDecl(std::string id, TypeExpr* expr) : id{id}, expr{expr} {}
+  VarDecl(std::string id, TypeExpr* expr) : id{std::move(id)}, expr{expr} {}
   VarDecl(const VarDecl& rhs) {
     id = rhs.id;
     expr = rhs.expr->clone();
   }
-  ~VarDecl() { delete expr; }
-  virtual VarDecl* clone() const { return new VarDecl(*this); }
-  virtual std::string getAsString();
-  virtual std::string getId();
+  ~VarDecl() override { delete expr; }
+  [[nodiscard]] VarDecl* clone() const override { return new VarDecl(*this); }
+  std::string getAsString() override;
+  std::string getId() override;
 
  private:
   std::string id;

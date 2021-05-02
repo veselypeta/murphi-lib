@@ -1,6 +1,5 @@
 #include "models/ConstDecl.h"
 #include <string>
-#include "models/Decl.h"
 
 namespace murphi {
 

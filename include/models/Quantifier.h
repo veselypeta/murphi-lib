@@ -12,9 +12,9 @@ namespace murphi {
 // TODO -- currently implementing the basic quantifier
 class Quantifier : Printable<Quantifier> {
  public:
-  Quantifier(std::string id, TypeExpr* tyExpr) : id{id}, tyExpr{tyExpr} {}
+  Quantifier(std::string id, TypeExpr* tyExpr) : id{std::move(id)}, tyExpr{tyExpr} {}
   ~Quantifier() { delete tyExpr; }
-  std::string getAsString() { return id + " : " + tyExpr->getAsString(); }
+  std::string getAsString() override { return id + " : " + tyExpr->getAsString(); }
 
  private:
   std::string id;

@@ -7,17 +7,16 @@
 #include "models/Formal.h"
 #include "models/TypeExpr.h"
 
-namespace murphi {
-namespace proc {
+namespace murphi::proc {
 
 /*	<procdecl> ::=	<procedure>
                      | 	<function>
                */
 class ProcDecl : public Printable<ProcDecl>, public Identifyable<ProcDecl> {
  public:
-  ProcDecl() {}
-  virtual ~ProcDecl() {}
-  virtual std::string getAsString() = 0;
+  ProcDecl() = default;
+  virtual ~ProcDecl() = default;
+  std::string getAsString() override = 0;
   virtual std::string getId() = 0;
 };
 
@@ -28,15 +27,15 @@ class ProcDecl : public Printable<ProcDecl>, public Identifyable<ProcDecl> {
 */
 class Function : public ProcDecl {
  public:
-  Function() {}
-  ~Function() { delete rv; }
-  virtual std::string getAsString();
-  virtual std::string getId();
+  Function() = default;
+  ~Function() override { delete rv; }
+  std::string getAsString() override;
+  std::string getId() override;
   void addFormalParameter(Formal pram);
 
  private:
   std::string id;
-  TypeExpr* rv;
+  TypeExpr* rv{};
   std::vector<Formal> params;
   Decls forwardDecls;
   // stmts
@@ -46,10 +45,11 @@ class Function : public ProcDecl {
         <procedure> ::=	procedure <ID> \( [ <formal> { ; <formal> } ] \) ;
                         [ { <decl> } begin ] [ <stmts> ] end;
 */
+// TODO -- needs to be tested!!
 class Procedure : public ProcDecl {
  public:
-  virtual std::string getAsString();
-  virtual std::string getId();
+  std::string getAsString() override;
+  std::string getId() override;
   void addFormalParameter(Formal pram);
 
  private:
@@ -59,5 +59,4 @@ class Procedure : public ProcDecl {
   // stmts
 };
 
-}  // namespace proc
 }  // namespace murphi

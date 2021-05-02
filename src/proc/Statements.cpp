@@ -17,7 +17,7 @@ void Stmts::addStatement(Stmt* s) {
 }
 
 bool Stmts::isEmpty() {
-  return stmts.size() == 0;
+  return stmts.empty();
 }
 
 // --- Assignment -- //

@@ -22,14 +22,14 @@ namespace murphi {
               */
 class Stmt : public Printable<Stmt> {
  public:
-  virtual std::string getAsString() = 0;
-  virtual ~Stmt() {}
+  std::string getAsString() override = 0;
+  virtual ~Stmt() = default;
 };
 
 // <stmts> ::= <stmt> {; [<stmt>] }
 class Stmts : public Printable<Stmts> {
  public:
-  std::string getAsString();
+  std::string getAsString() override;
   void addStatement(Stmt* s);
   bool isEmpty();
 
@@ -41,11 +41,11 @@ class Stmts : public Printable<Stmts> {
 class Assignment : public Stmt {
  public:
   Assignment(Designator* des, Expr* expr) : des{des}, expr{expr} {}
-  ~Assignment() {
+  ~Assignment() override {
     delete des;
     delete expr;
   }
-  virtual std::string getAsString();
+  std::string getAsString() override;
 
  private:
   Designator* des;
@@ -60,9 +60,9 @@ class Assignment : public Stmt {
 */
 class IfStmt : public Stmt {
  public:
-  IfStmt(Expr* ifExpr) : ifExpr{ifExpr} {}
-  ~IfStmt() { delete ifExpr; }
-  virtual std::string getAsString();
+  explicit IfStmt(Expr* ifExpr) : ifExpr{ifExpr} {}
+  ~IfStmt() override { delete ifExpr; }
+  std::string getAsString() override;
   void addThenStatement(Stmt* s);
   void addElseStatement(Stmt* s);
 
@@ -82,9 +82,9 @@ class IfStmt : public Stmt {
 
 class CaseStmt : public Printable<CaseStmt> {
  public:
-  CaseStmt(Expr* ce) { caseExprs.push_back(ce); }
+  explicit  CaseStmt(Expr* ce) { caseExprs.push_back(ce); }
   ~CaseStmt() { caseExprs.clear(); }
-  std::string getAsString();
+  std::string getAsString() override;
   void addCaseExpr(Expr* e);
   void addCaseStatement(Stmt* s);
 
@@ -95,10 +95,10 @@ class CaseStmt : public Printable<CaseStmt> {
 
 class SwitchStmt : public Stmt {
  public:
-  SwitchStmt(Expr* switchExpr) : swExpr{switchExpr} {}
-  ~SwitchStmt() { delete swExpr; }
-  virtual std::string getAsString();
-  void addCaseStmt(CaseStmt c) { caseStmts.push_back(c); };
+  explicit SwitchStmt(Expr* switchExpr) : swExpr{switchExpr} {}
+  ~SwitchStmt() override { delete swExpr; }
+  std::string getAsString() override;
+  void addCaseStmt(CaseStmt c) { caseStmts.push_back(std::move(c)); };
   void addElseStmt(Stmt* s) { elseStmts.addStatement(s); };
 
  private:
@@ -110,8 +110,8 @@ class SwitchStmt : public Stmt {
 /* <forstmt> ::= for <quantifier> do [stmts] endfor*/
 class ForStmt : public Stmt {
  public:
-  ForStmt(Quantifier* q) : quant{q} {}
-  virtual std::string getAsString();
+  explicit ForStmt(Quantifier* q) : quant{q} {}
+  std::string getAsString() override;
   void addStatement(Stmt* s) { stmts.addStatement(s); }
 
  private:
@@ -120,11 +120,11 @@ class ForStmt : public Stmt {
 };
 
 // <whilestmt> ::= while <expr> do [stmts] end //
-class WhileStmt : public Stmts {
+class WhileStmt : public Stmt {
  public:
-  WhileStmt(Expr* expr) : expr{expr} {}
-  ~WhileStmt() { delete expr; }
-  virtual std::string getAsString();
+  explicit WhileStmt(Expr* expr) : expr{expr} {}
+  ~WhileStmt() override { delete expr; }
+  std::string getAsString() override;
   void addStatement(Stmt* s) { stmts.addStatement(s); }
 
  private:
@@ -139,9 +139,9 @@ class WhileStmt : public Stmts {
 */
 class Alias : public Printable<Alias> {
  public:
-  Alias(std::string id, Expr* expr) : id{id}, expr{expr} {}
+  Alias(std::string id, Expr* expr) : id{std::move(id)}, expr{expr} {}
   ~Alias() { delete expr; }
-  std::string getAsString() { return id + " : " + expr->getAsString(); }
+  std::string getAsString() override { return id + " : " + expr->getAsString(); }
 
  private:
   std::string id;
@@ -151,8 +151,8 @@ class Alias : public Printable<Alias> {
 class AliasStmt : public Stmt {
  public:
   explicit AliasStmt(Alias* a) { aliasses.push_back(a); }
-  ~AliasStmt() { aliasses.clear(); }
-  virtual std::string getAsString();
+  ~AliasStmt() override { aliasses.clear(); }
+  std::string getAsString() override;
   void addStatement(Stmt* s) { stmts.addStatement(s); }
 
  private:
@@ -163,11 +163,11 @@ class AliasStmt : public Stmt {
 /*<proccall> ::= <ID> \( <expr> {, <expr> } \)*/
 class ProcCall : public Stmt {
  public:
-  explicit ProcCall(std::string procId, Expr* e) : id{procId} {
+  explicit ProcCall(std::string procId, Expr* e) : id{std::move(procId)} {
     exprs.push_back(e);
   }
-  ~ProcCall() { exprs.clear(); }
-  virtual std::string getAsString();
+  ~ProcCall() override { exprs.clear(); }
+  std::string getAsString() override;
   void addArgument(Expr* x) { exprs.push_back(x); }
 
  private:
@@ -179,8 +179,8 @@ class ProcCall : public Stmt {
 class ClearStmt : public Stmt {
  public:
   explicit ClearStmt(Designator* des) : des{des} {}
-  ~ClearStmt() { delete des; }
-  virtual std::string getAsString() { return "clear " + des->getAsString(); }
+  ~ClearStmt() override { delete des; }
+  std::string getAsString() override { return "clear " + des->getAsString(); }
 
  private:
   Designator* des;
@@ -189,8 +189,8 @@ class ClearStmt : public Stmt {
 /* <errorstmt> ::= error <string> */
 class ErrorStmt : public Stmt {
  public:
-  explicit ErrorStmt(std::string msg) : msg{msg} {};
-  virtual std::string getAsString() { return "error \"" + msg + "\""; }
+  explicit ErrorStmt(std::string msg) : msg{std::move(msg)} {};
+  std::string getAsString() override { return "error \"" + msg + "\""; }
 
  private:
   std::string msg;
@@ -200,9 +200,9 @@ class ErrorStmt : public Stmt {
 class AssertStmt : public Stmt {
  public:
   explicit AssertStmt(Expr* expr) : expr{expr} {}
-  explicit AssertStmt(Expr* expr, std::string msg) : expr{expr}, msg{msg} {}
-  ~AssertStmt() { delete expr; }
-  virtual std::string getAsString();
+  explicit AssertStmt(Expr* expr, std::string msg) : expr{expr}, msg{std::move(msg)} {}
+  ~AssertStmt() override { delete expr; }
+  std::string getAsString() override;
 
  private:
   Expr* expr;
@@ -212,14 +212,14 @@ class AssertStmt : public Stmt {
 /* <putstmt> ::= put ( <expr> | <string> ) */
 class PutStmt : public Stmt {
  public:
-  PutStmt(std::string val) : val{val}, type{STRING} {}
-  PutStmt(Expr* expr) : expr{expr}, type{EXPR} {}
-  ~PutStmt() {
+  explicit PutStmt(std::string val) : val{std::move(val)}, type{STRING} {}
+  explicit PutStmt(Expr* expr) : expr{expr}, type{EXPR} {}
+  ~PutStmt() override {
     if (this->type == EXPR) {
       delete expr;
     }
   }
-  virtual std::string getAsString();
+  std::string getAsString() override;
 
  private:
   typedef enum { STRING, EXPR } putType;
@@ -232,9 +232,9 @@ class PutStmt : public Stmt {
 class ReturnStmt : public Stmt {
  public:
   ReturnStmt() : expr{nullptr} {}
-  ReturnStmt(Expr* expr) : expr{expr} {}
-  ~ReturnStmt() { delete expr; }
-  virtual std::string getAsString();
+  explicit ReturnStmt(Expr* expr) : expr{expr} {}
+  ~ReturnStmt() override { delete expr; }
+  std::string getAsString() override;
 
  private:
   Expr* expr;
@@ -243,10 +243,10 @@ class ReturnStmt : public Stmt {
 /* undefinestmt	: UNDEFINE designator; */
 class UndefineStmt : public Stmt {
  public:
-  UndefineStmt(Designator* des) : des{des} {}
-  ~UndefineStmt() { delete des; }
+  explicit UndefineStmt(Designator* des) : des{des} {}
+  ~UndefineStmt() override { delete des; }
 
-  virtual std::string getAsString();
+  std::string getAsString() override;
 
  private:
   Designator* des;
@@ -256,12 +256,12 @@ class MultiSetAddStmt : public Stmt {
  public:
   MultiSetAddStmt(murphi::Designator* msg, murphi::Designator* net)
       : msg{msg}, net{net} {}
-  ~MultiSetAddStmt() {
+  ~MultiSetAddStmt() override {
     delete msg;
     delete net;
   }
 
-  virtual std::string getAsString();
+  std::string getAsString() override;
 
  private:
   Designator* msg;
@@ -272,12 +272,12 @@ class MultiSetRemoveStmt : public Stmt {
  public:
   MultiSetRemoveStmt(murphi::Designator* msg, murphi::Designator* net)
       : msg{msg}, net{net} {}
-  ~MultiSetRemoveStmt() {
+  ~MultiSetRemoveStmt() override {
     delete msg;
     delete net;
   }
 
-  virtual std::string getAsString();
+  std::string getAsString() override;
 
  private:
   Designator* msg;

@@ -1,6 +1,5 @@
 #include "models/Expr.h"
 #include <string>
-#include "models/Quantifier.h"
 #include "models/TypeExpr.h"
 
 namespace murphi {

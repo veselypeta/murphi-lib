@@ -1,8 +1,7 @@
 #include "proc/ProcDecl.h"
 #include "utils/PrintUtils.h"
 
-namespace murphi {
-namespace proc {
+namespace murphi::proc {
 
 // ----- FUNCTION ----- //
 
@@ -35,5 +34,4 @@ void Procedure::addFormalParameter(Formal param) {
   return params.push_back(param);
 }
 
-}  // namespace proc
 }  // namespace murphi

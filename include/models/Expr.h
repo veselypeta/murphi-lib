@@ -1,7 +1,8 @@
 #pragma once
-#include <string>
-#include <vector>
 #include "interfaces/Printable.h"
+#include <string>
+#include <utility>
+#include <vector>
 
 /*
  -- Grammar for expressions
@@ -35,45 +36,50 @@ namespace murphi {
 class TypeExpr;
 // Abstract Class Expression
 class Expr : public Printable<Expr> {
- public:
-  virtual std::string getAsString() = 0;
-  virtual Expr* clone() const = 0;
-  virtual ~Expr(){};
+public:
+  std::string getAsString() override = 0;
+  [[nodiscard]] virtual Expr *clone() const = 0;
+  virtual ~Expr() = default;
+  ;
 };
 
 /* \( expr \) */
 class ParenthExpr : public Expr {
- public:
-  ParenthExpr(Expr* ex) : ex(ex) {}
-  ParenthExpr(const ParenthExpr& rhs) { ex = rhs.ex->clone(); }
-  virtual std::string getAsString();
+public:
+  explicit ParenthExpr(Expr *ex) : ex(ex) {}
+  ParenthExpr(const ParenthExpr &rhs) { ex = rhs.ex->clone(); }
+  std::string getAsString() override;
   // clone calls the actual copy constructor
-  virtual ParenthExpr* clone() const { return new ParenthExpr(*this); };
-  ~ParenthExpr() { delete ex; }
+  [[nodiscard]] ParenthExpr *clone() const override {
+    return new ParenthExpr(*this);
+  };
+  ~ParenthExpr() override { delete ex; }
 
- private:
-  Expr* ex;
+private:
+  Expr *ex;
 };
 
 // <designator>
 class Designator : public Expr {
- public:
-  Designator(std::string id) : id{id} {}
-  Designator(const Designator& rhs) = default;
-  virtual Designator* clone() const { return new Designator(*this); }
-  ~Designator() {}
-  std::string getAsString();
+public:
+  explicit Designator(std::string id) : id{std::move(id)} {}
+  Designator(const Designator &rhs) = default;
+  [[nodiscard]] Designator *clone() const override {
+    return new Designator(*this);
+  }
+  ~Designator() override = default;
+  std::string getAsString() override;
   void addIndex(std::string fieldId);
-  void addIndex(Expr* arrIndex);
+  void addIndex(Expr *arrIndex);
 
- private:
+private:
   typedef enum { ID, EXPR } identOrExpr;
   class Container {
-   public:
-    Container(std::string fieldId)
+  public:
+    explicit Container(std::string fieldId)
         : fieldId{fieldId}, expr{nullptr}, type{ID} {}
-    Container(Expr* expr) : fieldId{""}, expr{expr}, type{EXPR} {}
-    Container(const Container& rhs) {
+    explicit Container(Expr *expr) : expr{expr}, type{EXPR} {}
+    Container(const Container &rhs) {
       if (rhs.expr != nullptr) {
         expr = rhs.expr->clone();
       } else {
@@ -91,9 +97,9 @@ class Designator : public Expr {
       }
     }
 
-   private:
+  private:
     std::string fieldId;
-    Expr* expr;
+    Expr *expr;
     identOrExpr type;
   };
   std::string id;
@@ -102,383 +108,391 @@ class Designator : public Expr {
 
 // <integer-constant>
 class IntExpr : public Expr {
- public:
-  IntExpr(int value) : exprVal(value) {}
-  IntExpr(const IntExpr& rhs) = default;
-  virtual IntExpr* clone() const { return new IntExpr(*this); }
-  virtual std::string getAsString();
-  ~IntExpr() {}
+public:
+  explicit IntExpr(int value) : exprVal(value) {}
+  IntExpr(const IntExpr &rhs) = default;
+  [[nodiscard]] IntExpr *clone() const override { return new IntExpr(*this); }
+  std::string getAsString() override;
+  ~IntExpr() override = default;
 
- private:
+private:
   int exprVal;
 };
 
 // <expr> + <expr>
 class AddExpr : public Expr {
- public:
-  AddExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  AddExpr(const AddExpr& in) {
+public:
+  AddExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  AddExpr(const AddExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual AddExpr* clone() const { return new AddExpr(*this); }
-  virtual std::string getAsString();
-  ~AddExpr() {
+  [[nodiscard]] AddExpr *clone() const override { return new AddExpr(*this); }
+  std::string getAsString() override;
+  ~AddExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> - <expr>
 class SubExpr : public Expr {
- public:
-  SubExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  SubExpr(const SubExpr& in) {
+public:
+  SubExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  SubExpr(const SubExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual SubExpr* clone() const { return new SubExpr(*this); }
-  virtual std::string getAsString();
-  ~SubExpr() {
+  [[nodiscard]] SubExpr *clone() const override { return new SubExpr(*this); }
+  std::string getAsString() override;
+  ~SubExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> * <expr>
 class MultExpr : public Expr {
- public:
-  MultExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  MultExpr(const MultExpr& in) {
+public:
+  MultExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  MultExpr(const MultExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual MultExpr* clone() const { return new MultExpr(*this); }
-  virtual std::string getAsString();
-  ~MultExpr() {
+  [[nodiscard]] MultExpr *clone() const override { return new MultExpr(*this); }
+  std::string getAsString() override;
+  ~MultExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> / <expr>
 class DivExpr : public Expr {
- public:
-  DivExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  DivExpr(const DivExpr& in) {
+public:
+  DivExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  DivExpr(const DivExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual DivExpr* clone() const { return new DivExpr(*this); }
-  virtual std::string getAsString();
-  ~DivExpr() {
+  [[nodiscard]] DivExpr *clone() const override { return new DivExpr(*this); }
+  std::string getAsString() override;
+  ~DivExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> % <expr>
 class RemExpr : public Expr {
- public:
-  RemExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  RemExpr(const RemExpr& in) {
+public:
+  RemExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  RemExpr(const RemExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual RemExpr* clone() const { return new RemExpr(*this); }
-  virtual std::string getAsString();
-  ~RemExpr() {
+  [[nodiscard]] RemExpr *clone() const override { return new RemExpr(*this); }
+  std::string getAsString() override;
+  ~RemExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // ! <expr>			-- logical negation.
 class LogNegExpr : public Expr {
- public:
-  LogNegExpr(Expr* expr) : expr(expr) {}
-  LogNegExpr(const LogNegExpr& rhs) { expr = rhs.clone(); }
-  ~LogNegExpr() { delete expr; }
-  virtual LogNegExpr* clone() const { return new LogNegExpr(*this); }
-  virtual std::string getAsString();
+public:
+  explicit LogNegExpr(Expr *expr) : expr(expr) {}
+  LogNegExpr(const LogNegExpr &rhs) { expr = rhs.clone(); }
+  ~LogNegExpr() override { delete expr; }
+  [[nodiscard]] LogNegExpr *clone() const override {
+    return new LogNegExpr(*this);
+  }
+  std::string getAsString() override;
 
- private:
-  Expr* expr;
+private:
+  Expr *expr;
 };
 
 // <expr> | <expr>
 class LogDisjExpr : public Expr {
- public:
-  LogDisjExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  LogDisjExpr(const LogDisjExpr& in) {
+public:
+  LogDisjExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  LogDisjExpr(const LogDisjExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual LogDisjExpr* clone() const { return new LogDisjExpr(*this); }
-  virtual std::string getAsString();
-  ~LogDisjExpr() {
+  [[nodiscard]] LogDisjExpr *clone() const override {
+    return new LogDisjExpr(*this);
+  }
+  std::string getAsString() override;
+  ~LogDisjExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> % <expr>
 class LogConjExpr : public Expr {
- public:
-  LogConjExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  LogConjExpr(const LogConjExpr& in) {
+public:
+  LogConjExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  LogConjExpr(const LogConjExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual LogConjExpr* clone() const { return new LogConjExpr(*this); }
-  virtual std::string getAsString();
-  ~LogConjExpr() {
+  [[nodiscard]] LogConjExpr *clone() const override {
+    return new LogConjExpr(*this);
+  }
+  std::string getAsString() override;
+  ~LogConjExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> -> <expr>
 class LogImplExpr : public Expr {
- public:
-  LogImplExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  LogImplExpr(const LogImplExpr& in) {
+public:
+  LogImplExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  LogImplExpr(const LogImplExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual LogImplExpr* clone() const { return new LogImplExpr(*this); }
-  virtual std::string getAsString();
-  ~LogImplExpr() {
+  [[nodiscard]] LogImplExpr *clone() const override {
+    return new LogImplExpr(*this);
+  }
+  std::string getAsString() override;
+  ~LogImplExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> < <expr>
 class LTExpr : public Expr {
- public:
-  LTExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  LTExpr(const LTExpr& in) {
+public:
+  LTExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  LTExpr(const LTExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual LTExpr* clone() const { return new LTExpr(*this); }
-  virtual std::string getAsString();
-  ~LTExpr() {
+  [[nodiscard]] LTExpr *clone() const override { return new LTExpr(*this); }
+  std::string getAsString() override;
+  ~LTExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> <= <expr>
 class LTEQExpr : public Expr {
- public:
-  LTEQExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  LTEQExpr(const LTEQExpr& in) {
+public:
+  LTEQExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  LTEQExpr(const LTEQExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual LTEQExpr* clone() const { return new LTEQExpr(*this); }
-  virtual std::string getAsString();
-  ~LTEQExpr() {
+  [[nodiscard]] LTEQExpr *clone() const override { return new LTEQExpr(*this); }
+  std::string getAsString() override;
+  ~LTEQExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> > <expr>
 class GTExpr : public Expr {
- public:
-  GTExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  GTExpr(const GTExpr& in) {
+public:
+  GTExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  GTExpr(const GTExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual GTExpr* clone() const { return new GTExpr(*this); }
-  virtual std::string getAsString();
-  ~GTExpr() {
+  [[nodiscard]] GTExpr *clone() const override { return new GTExpr(*this); }
+  std::string getAsString() override;
+  ~GTExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> >= <expr>
 class GTEQExpr : public Expr {
- public:
-  GTEQExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  GTEQExpr(const GTEQExpr& in) {
+public:
+  GTEQExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  GTEQExpr(const GTEQExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual GTEQExpr* clone() const { return new GTEQExpr(*this); }
-  virtual std::string getAsString();
-  ~GTEQExpr() {
+  [[nodiscard]] GTEQExpr *clone() const override { return new GTEQExpr(*this); }
+  std::string getAsString() override;
+  ~GTEQExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> = <expr>
 class EQExpr : public Expr {
- public:
-  EQExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  EQExpr(const EQExpr& in) {
+public:
+  EQExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  EQExpr(const EQExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual EQExpr* clone() const { return new EQExpr(*this); }
-  virtual std::string getAsString();
-  ~EQExpr() {
+  [[nodiscard]] EQExpr *clone() const override { return new EQExpr(*this); }
+  std::string getAsString() override;
+  ~EQExpr() override {
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> != <expr>
 class NEQExpr : public Expr {
- public:
-  NEQExpr(Expr* lhs, Expr* rhs) : lhs(lhs), rhs(rhs) {}
-  NEQExpr(const NEQExpr& in) {
+public:
+  NEQExpr(Expr *lhs, Expr *rhs) : lhs(lhs), rhs(rhs) {}
+  NEQExpr(const NEQExpr &in) {
     lhs = in.lhs->clone();
     rhs = in.rhs->clone();
   }
-  virtual NEQExpr* clone() const { return new NEQExpr(*this); }
-  virtual std::string getAsString();
-  ~NEQExpr() {
+  [[nodiscard]] NEQExpr *clone() const override { return new NEQExpr(*this); }
+  std::string getAsString() override;
+   ~NEQExpr() override{
     delete lhs;
     delete rhs;
   }
 
- private:
-  Expr* lhs;
-  Expr* rhs;
+private:
+  Expr *lhs;
+  Expr *rhs;
 };
 
 // <expr> ? <expr> : <expr>	-- C-style conditional expression.
 class CondExpr : public Expr {
- public:
-  CondExpr(Expr* condExpr, Expr* thenExpr, Expr* elseExpr)
+public:
+  CondExpr(Expr *condExpr, Expr *thenExpr, Expr *elseExpr)
       : condExpr(condExpr), thenExpr(thenExpr), elseExpr(elseExpr) {}
 
-  CondExpr(const CondExpr& rhs) {
+  CondExpr(const CondExpr &rhs) {
     condExpr = rhs.condExpr->clone();
     thenExpr = rhs.thenExpr->clone();
     elseExpr = rhs.elseExpr->clone();
   }
 
-  virtual CondExpr* clone() const { return new CondExpr(*this); }
-  ~CondExpr() {
+  [[nodiscard]] CondExpr *clone() const override { return new CondExpr(*this); }
+  ~CondExpr() override {
     delete condExpr;
     delete thenExpr;
     delete elseExpr;
   }
-  virtual std::string getAsString();
+  std::string getAsString() override;
 
- private:
-  Expr* condExpr;
-  Expr* thenExpr;
-  Expr* elseExpr;
+private:
+  Expr *condExpr;
+  Expr *thenExpr;
+  Expr *elseExpr;
 };
 
 // <expr> : | ISUNDEFINED '(' designator ')';
 class IsUndefExpr : public Expr {
- public:
-  IsUndefExpr(Designator* des) : des{des} {}
-  IsUndefExpr(const IsUndefExpr& rhs) { des = rhs.des->clone(); }
-  ~IsUndefExpr() { delete des; }
-  virtual IsUndefExpr* clone() const { return new IsUndefExpr(*this); }
-  virtual std::string getAsString();
+public:
+  explicit IsUndefExpr(Designator *des) : des{des} {}
+  IsUndefExpr(const IsUndefExpr &rhs) { des = rhs.des->clone(); }
+  ~IsUndefExpr() override { delete des; }
+  [[nodiscard]] IsUndefExpr *clone() const override { return new IsUndefExpr(*this); }
+  std::string getAsString() override;
 
- private:
-  Designator* des;
+private:
+  Designator *des;
 };
 
 // <expr> : | ISMEMBER '(' designator ',' typeExpr ')' ;
 class IsMemberExpr : public Expr {
- public:
-  IsMemberExpr(Designator* des, TypeExpr* tyexpr) : des{des}, tyexpr{tyexpr} {}
-  IsMemberExpr(const IsMemberExpr& rhs) {
+public:
+  IsMemberExpr(Designator *des, TypeExpr *tyexpr) : des{des}, tyexpr{tyexpr} {}
+  IsMemberExpr(const IsMemberExpr &rhs) {
     des = rhs.des->clone();
     // TODO - TypeExpr need to be coppied too
     // tyexpr = rhs.tyexpr->clone();
   }
-  virtual IsMemberExpr* clone() const { return new IsMemberExpr(*this); }
-  ~IsMemberExpr();
-  virtual std::string getAsString();
+  [[nodiscard]] IsMemberExpr *clone() const override { return new IsMemberExpr(*this); }
+  ~IsMemberExpr() override;
+  std::string getAsString() override;
 
- private:
-  Designator* des;
-  TypeExpr* tyexpr;
+private:
+  Designator *des;
+  TypeExpr *tyexpr{};
 };
 
 class MultiSetCountExpr : public Expr {
- public:
-  MultiSetCountExpr(std::string var, Expr* expr) : var{var}, expr{expr} {}
-  MultiSetCountExpr(const MultiSetCountExpr& rhs) {
+public:
+  MultiSetCountExpr(std::string var, Expr *expr) : var{std::move(var)}, expr{expr} {}
+  MultiSetCountExpr(const MultiSetCountExpr &rhs) {
     var = rhs.var;
     expr = rhs.expr->clone();
   }
-  virtual MultiSetCountExpr* clone() const {
+  [[nodiscard]] MultiSetCountExpr *clone() const override {
     return new MultiSetCountExpr(*this);
   }
-  ~MultiSetCountExpr() { delete expr; }
-  virtual std::string getAsString();
+  ~MultiSetCountExpr() override { delete expr; }
+  std::string getAsString() override;
 
- private:
+private:
   std::string var;
-  Expr* expr;
+  Expr *expr;
 };
 
-}  // namespace murphi
+} // namespace murphi
