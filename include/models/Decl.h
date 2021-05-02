@@ -24,7 +24,7 @@ class Decls : Printable<Decls> {
  public:
   std::string getAsString() override;
   void addDecl(IDecl* decl) { decls.push_back(decl); };
-  bool isValidReference(std::string &id);
+  bool isValidReference(std::string& id);
 
  private:
   std::vector<IDecl*> decls;

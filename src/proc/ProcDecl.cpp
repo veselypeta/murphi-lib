@@ -34,4 +34,4 @@ void Procedure::addFormalParameter(Formal param) {
   return params.push_back(param);
 }
 
-}  // namespace murphi
+}  // namespace murphi::proc

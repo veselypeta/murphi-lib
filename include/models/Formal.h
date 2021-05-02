@@ -10,9 +10,11 @@ namespace murphi {
 */
 class Formal : public Printable<Formal> {
  public:
-  Formal(const std::string &id, TypeExpr* expr) : expr{expr} { ids.push_back(id); }
+  Formal(const std::string& id, TypeExpr* expr) : expr{expr} {
+    ids.push_back(id);
+  }
   ~Formal() { delete expr; }
-  void addFormalIdent(const std::string &id);
+  void addFormalIdent(const std::string& id);
   std::string getAsString();
 
  private:

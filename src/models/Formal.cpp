@@ -12,7 +12,7 @@ std::string Formal::getAsString() {
          expr->getAsString();
 }
 
-void Formal::addFormalIdent(const std::string &id) {
+void Formal::addFormalIdent(const std::string& id) {
   return ids.push_back(id);
 }
 }  // namespace murphi

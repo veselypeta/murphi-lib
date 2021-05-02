@@ -82,7 +82,7 @@ class IfStmt : public Stmt {
 
 class CaseStmt : public Printable<CaseStmt> {
  public:
-  explicit  CaseStmt(Expr* ce) { caseExprs.push_back(ce); }
+  explicit CaseStmt(Expr* ce) { caseExprs.push_back(ce); }
   ~CaseStmt() { caseExprs.clear(); }
   std::string getAsString() override;
   void addCaseExpr(Expr* e);
@@ -141,7 +141,9 @@ class Alias : public Printable<Alias> {
  public:
   Alias(std::string id, Expr* expr) : id{std::move(id)}, expr{expr} {}
   ~Alias() { delete expr; }
-  std::string getAsString() override { return id + " : " + expr->getAsString(); }
+  std::string getAsString() override {
+    return id + " : " + expr->getAsString();
+  }
 
  private:
   std::string id;
@@ -200,7 +202,8 @@ class ErrorStmt : public Stmt {
 class AssertStmt : public Stmt {
  public:
   explicit AssertStmt(Expr* expr) : expr{expr} {}
-  explicit AssertStmt(Expr* expr, std::string msg) : expr{expr}, msg{std::move(msg)} {}
+  explicit AssertStmt(Expr* expr, std::string msg)
+      : expr{expr}, msg{std::move(msg)} {}
   ~AssertStmt() override { delete expr; }
   std::string getAsString() override;
 

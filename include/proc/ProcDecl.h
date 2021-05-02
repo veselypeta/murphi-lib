@@ -59,4 +59,4 @@ class Procedure : public ProcDecl {
   // stmts
 };
 
-}  // namespace murphi
+}  // namespace murphi::proc

@@ -19,7 +19,7 @@ std::string Decls::getAsString() {
   }
   return utils::interleave(text, " ");
 }
-bool Decls::isValidReference(std::string &id) {
+bool Decls::isValidReference(std::string& id) {
   for (IDecl* d : decls) {
     if (d->getId() == id) {
       return true;

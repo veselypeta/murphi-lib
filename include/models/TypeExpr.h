@@ -49,7 +49,9 @@ class IntegerSubRange : public TypeExpr {
     delete lhs;
     delete rhs;
   }
-  [[nodiscard]] IntegerSubRange* clone() const override { return new IntegerSubRange(*this); }
+  [[nodiscard]] IntegerSubRange* clone() const override {
+    return new IntegerSubRange(*this);
+  }
   std::string getAsString() override;
 
  private:
@@ -92,7 +94,9 @@ class ScalarSet : public TypeExpr {
   explicit ScalarSet(Expr* expr) : expr{expr} {}
   ScalarSet(const ScalarSet& rhs) { expr = rhs.expr->clone(); }
   ~ScalarSet() override { delete expr; }
-  [[nodiscard]] ScalarSet* clone() const override { return new ScalarSet(*this); }
+  [[nodiscard]] ScalarSet* clone() const override {
+    return new ScalarSet(*this);
+  }
   std::string getAsString() override;
 
  private:
