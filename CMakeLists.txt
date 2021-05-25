@@ -24,10 +24,10 @@ if (NOT (CMAKE_BUILD_TYPE STREQUAL "Release"))
     )
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
-    # include gnu dirs
-    include(GNUInstallDirs)
 endif ()
 
+# include gnu dirs
+include(GNUInstallDirs)
 
 set(SOURCE_FILES
         src/murphi.cpp
