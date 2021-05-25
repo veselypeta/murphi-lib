@@ -48,7 +48,7 @@ set(SOURCE_FILES
         )
 
 # add the library
-add_library(${PROJECT_NAME} SHARED
+add_library(${PROJECT_NAME} STATIC
         ${SOURCE_FILES}
         )
 
